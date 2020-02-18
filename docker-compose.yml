@@ -1,0 +1,91 @@
+version: "3.7"
+
+# 共通化のための機能でプレフィックスとして"x-"をつける
+# https://docs.docker.com/compose/compose-file/#extension-fields
+# Dockerfileで定義したアプリケーションコンテナの構築で必要な情報を提供する
+x-app: &app
+  build:
+    context: .
+    dockerfile: ./.dockerdev/Dockerfile
+    args:
+      RUBY_VERSION: '2.6.5'
+      PG_MAJOR: '12'
+      NODE_MAJOR: '12'
+      YARN_VERSION: '1.21.1'
+      BUNDLER_VERSION: '2.1.2'
+  environment: &env
+    NODE_ENV: development
+    #「X: ${X:-smth}」は「コンテナ内のXという環境変数はホストマシンにXという環境変数の値があればそれを用い、なければ別の値を用いる」
+    # コマンドで別の環境を指定してサービスを実行できる
+    RAILS_ENV: ${RAILS_ENV:-development}
+  # tmpフォルダをDockerのtmpsfsマウントを行うことで高速化しています
+  # https://docs.docker.com/v17.09/engine/admin/volumes/tmpfs/
+  tmpfs:
+    - /tmp
+
+# Rubyのサービスで共有する振る舞いを提供する
+x-backend: &backend
+  <<: *app
+  # コンテナの標準入力をオープンしたままにする
+  stdin_open: true
+  # コンテナに疑似TTYを割り当てる(起動しっぱなしにする)
+  tty: true 
+  volumes:
+    # :cachedはMacOSでのDocker環境の効率を高めるため
+    # https://docs.docker.com/docker-for-mac/osxfs-caching/
+    # https://www.docker.com/blog/user-guided-caching-in-docker-for-mac/#h.gwo2at29v042
+    - .:/app:cached
+    - .dockerdev/.psqlrc:/root/.psqlrc:ro
+    - .dockerdev/.bashrc:/root/.bashrc:ro
+    # Dockerボリュームに配置しホストマシンでディスク操作が重くなるのを回避
+    # bundleをDockerボリュームに配置しgemデータを永続化する
+    - bundle:/usr/local/bundle
+    - rails_cache:/app/tmp/cache
+    - node_modules:/app/node_modules
+    - packs:/app/public/packs
+  environment:
+    <<: *env
+    DATABASE_URL: postgres://postgres:postgres@postgres:5432
+    BOOTSNAP_CACHE_DIR: /usr/local/bundle/_bootsnap
+    WEBPACKER_DEV_SERVER_HOST: webpacker
+    WEB_CONCURRENCY: 1
+    HISTFILE: /app/log/.bash_history
+    PSQL_HISTFILE: /app/log/.psql_history
+    EDITOR: vi
+
+services:
+  rails:
+    <<: *backend
+    # Railsアプリケーションを実行した状態にしたい時は下記コマンドを最後に実行すること
+    # bundle exec rails server -b 0.0.0.0
+    command: >
+      bash -c "bundle install &&
+      yarn install --check-files &&
+      bin/rake db:create &&
+      /bin/bash"
+    ports:
+      - '3000:3000'
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:12.1
+    volumes:
+      # ここのディレクトリに「/docker-entrypoint-initdb.d/」SQLファイルを置いておくと自動で実行してくれる
+      # 詳しくは「https://hub.docker.com/_/postgres」の「Initialization scripts」を参照すること
+      - .dockerdev/init_postgres/:/docker-entrypoint-initdb.d/
+      # psqlコマンドのプロンプトを見やすくするための設定
+      - .dockerdev/.psqlrc:/root/.psqlrc:ro
+      - postgres:/var/lib/postgresql/data
+      - ./log:/root/log:cached
+    environment:
+      PSQL_HISTFILE: /root/log/.psql_history
+    ports:
+      - 5432
+
+volumes:
+  postgres:
+  bundle:
+  node_modules:
+  rails_cache:
+  packs:
