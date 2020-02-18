@@ -1,0 +1,35 @@
+inherit_from: .rubocop_todo.yml
+
+require: rubocop-rails
+
+Rails:
+  Enabled: true
+
+AllCops:
+  TargetRubyVersion: 2.6.5
+  Exclude:
+    - bin/bundle
+    - bin/rails
+    - bin/rake
+    - bin/setup
+    - bin/spring
+    - bin/webpack
+    - bin/webpack-dev-server
+    - bin/yarn
+    - config/boot.rb
+    - config/spring.rb
+    - config/puma.rb
+    - config/environment.rb
+    - config/environments/development.rb
+    - config/environments/production.rb
+    - config/environments/test.rb
+    - config/initializers/wrap_parameters.rb
+    - 'db/schema.rb'
+    - 'vendor/**/*'
+    - 'node_modules/**/*'
+    - config.ru
+    - Gemfile
+    - Rakefile
+
+
+
