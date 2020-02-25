@@ -85,7 +85,7 @@ services:
     environment:
       PSQL_HISTFILE: /root/log/.psql_history
     ports:
-      - 5432
+      - '5432:5432'
 
 volumes:
   postgres:
