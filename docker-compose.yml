@@ -13,11 +13,6 @@ x-app: &app
       NODE_MAJOR: '12'
       YARN_VERSION: '1.21.1'
       BUNDLER_VERSION: '2.1.2'
-  environment: &env
-    NODE_ENV: development
-    #「X: ${X:-smth}」は「コンテナ内のXという環境変数はホストマシンにXという環境変数の値があればそれを用い、なければ別の値を用いる」
-    # コマンドで別の環境を指定してサービスを実行できる
-    RAILS_ENV: ${RAILS_ENV:-development}
   # tmpフォルダをDockerのtmpsfsマウントを行うことで高速化しています
   # https://docs.docker.com/v17.09/engine/admin/volumes/tmpfs/
   tmpfs:
@@ -39,19 +34,24 @@ x-backend: &backend
     - .dockerdev/.bashrc:/root/.bashrc:ro
     # Dockerボリュームに配置しホストマシンでディスク操作が重くなるのを回避
     # bundleをDockerボリュームに配置しgemデータを永続化する
-    - bundle:/usr/local/bundle
+    - bundle:/bundle
     - rails_cache:/app/tmp/cache
     - node_modules:/app/node_modules
     - packs:/app/public/packs
   environment:
-    <<: *env
+    #「X: ${X:-smth}」は「コンテナ内のXという環境変数はホストマシンにXという環境変数の値があればそれを用い、なければ別の値を用いる」
+    # コマンドで別の環境を指定してサービスを実行できる
+    RAILS_ENV: ${RAILS_ENV:-development}
+    NODE_ENV: development
     DATABASE_URL: postgres://postgres:postgres@postgres:5432
-    BOOTSNAP_CACHE_DIR: /usr/local/bundle/_bootsnap
+    BOOTSNAP_CACHE_DIR: /bundle/bootsnap
     WEBPACKER_DEV_SERVER_HOST: webpacker
     WEB_CONCURRENCY: 1
     HISTFILE: /app/log/.bash_history
     PSQL_HISTFILE: /app/log/.psql_history
     EDITOR: vi
+  depends_on:
+    - postgres
 
 services:
   rails:
@@ -65,8 +65,6 @@ services:
       /bin/bash"
     ports:
       - '3000:3000'
-    depends_on:
-      - postgres
 
   postgres:
     image: postgres:12.1
