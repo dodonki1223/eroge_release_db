@@ -66,6 +66,12 @@ services:
     ports:
       - '3000:3000'
 
+  runner:
+    <<: *backend
+    command: /bin/bash
+    ports:
+      - '3002:3002'
+
   postgres:
     image: postgres:12.1
     volumes:
