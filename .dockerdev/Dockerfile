@@ -68,18 +68,26 @@ RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get -yq dist-upgrad
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     truncate -s 0 /var/log/*log
 
-# Configure bundler
-ENV LANG=C.UTF-8 \
-  BUNDLE_JOBS=4 \
-  BUNDLE_RETRY=3
+# Bundler設定
+# gemインストールのパスは「GEM_HOME=/bundle」で設定する
+# 依存関係をホストシステムで永続化するためにボリュームとしてマウントする
+# docker-compoes.ymlで設定(- bundle:/bundle)
+ENV LANG=C.UTF-8\
+    GEM_HOME=/bundle\
+    BUNDLE_JOBS=4\
+    BUNDLE_RETRY=3
 
 # Uncomment this line if you store Bundler settings in the project's root
-# ENV BUNDLE_APP_CONFIG=.bundle
+# BUNDLE_PATH、BUNDLE_BIN変数はgemやRuby実行ファイルを探索する場所をBundlerに伝えます
+ENV BUNDLE_APP_CONFIG=$BUNDLE_PATH\
+    BUNDLE_BIN=$BUNDLE_PATH/bin
 
 # Uncomment this line if you want to run binstubs without prefixing with `bin/` or `bundle exec`
-# ENV PATH /app/bin:$PATH
+# いちいちbundle execを冒頭に付けなくてもrailsやrakeやrspecといった「binstub化されたコマンド」を実行できるようになる
+ENV PATH /app/bin:$BUNDLE_BIN:$PATH
 
 # Upgrade RubyGems and install required Bundler version
+# RubyGemsをアップグレードして必要なバージョンのBundlerをインストール
 RUN gem update --system && \
     gem install bundler:$BUNDLER_VERSION
 
