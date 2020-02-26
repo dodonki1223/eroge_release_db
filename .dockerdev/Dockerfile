@@ -79,7 +79,7 @@ ENV LANG=C.UTF-8\
 
 # Uncomment this line if you store Bundler settings in the project's root
 # BUNDLE_PATH、BUNDLE_BIN変数はgemやRuby実行ファイルを探索する場所をBundlerに伝えます
-ENV BUNDLE_APP_CONFIG=$BUNDLE_PATH\
+ENV BUNDLE_APP_CONFIG=$GEM_HOME\
     BUNDLE_BIN=$BUNDLE_PATH/bin
 
 # Uncomment this line if you want to run binstubs without prefixing with `bin/` or `bundle exec`
