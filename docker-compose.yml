@@ -26,16 +26,20 @@ x-app: &app
 # Rubyのサービスで共有するボリュームを提供する
 x-backend-volumes: &backend-volumes
   volumes:
+    # postgresの設定ファイル
+    - .dockerdev/.psqlrc:/root/.psqlrc:ro
+    # bashrcの設定ファイル
+    - .dockerdev/.bashrc:/root/.bashrc:ro
     # :cachedはMacOSでのDocker環境の効率を高めるため
     # https://docs.docker.com/docker-for-mac/osxfs-caching/
     # https://www.docker.com/blog/user-guided-caching-in-docker-for-mac/#h.gwo2at29v042
     - .:/app:cached
-    # Dockerボリュームに配置しホストマシンでディスク操作が重くなるのを回避
     # bundleをDockerボリュームに配置しgemデータを永続化する
     - bundle:/bundle
+    # Dockerボリュームに配置しホストマシンでディスク操作が重くなるのを回避
     - rails_cache:/app/tmp/cache
     - node_modules:/app/node_modules
-    - packs:/app/public/packs  
+    - packs:/app/public/packs
 
 # Rubyのサービスで共有する振る舞いを提供する
 x-backend: &backend
@@ -44,9 +48,6 @@ x-backend: &backend
   stdin_open: true
   # コンテナに疑似TTYを割り当てる(起動しっぱなしにする)
   tty: true 
-  volumes:
-    - .dockerdev/.psqlrc:/root/.psqlrc:ro
-    - .dockerdev/.bashrc:/root/.bashrc:ro
   environment:
     # この*envは*appを読み込んでいないと使用できません
     <<: *env
