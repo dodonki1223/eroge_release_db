@@ -51,7 +51,8 @@ x-backend: &backend
   environment:
     # この*envは*appを読み込んでいないと使用できません
     <<: *env
-    DATABASE_URL: postgres://postgres:postgres@postgres:5432
+    # redisにアクセスできるようの設定
+    REDIS_URL: redis://redis:6379/
     # boosnapのキャッシュディレクトリを永続化したディレクトリに設定
     BOOTSNAP_CACHE_DIR: /bundle/bootsnap
     WEBPACKER_DEV_SERVER_HOST: webpacker
@@ -67,6 +68,7 @@ x-backend: &backend
     WEB_CONCURRENCY: ${WEB_CONCURRENCY:-1}
   depends_on:
     - postgres
+    - redis
 
 services:
   rails:
@@ -90,6 +92,13 @@ services:
     command: /bin/bash
     ports:
       - '3002:3002'
+
+  redis:
+    image: redis:5.0-alpine
+    volumes:
+      - redis:/data
+    ports:
+      - 6379
 
   webpacker:
     <<: *app
@@ -123,3 +132,4 @@ volumes:
   node_modules:
   rails_cache:
   packs:
+  redis:
