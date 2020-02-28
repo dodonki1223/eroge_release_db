@@ -15,7 +15,7 @@ x-app: &app
       BUNDLER_VERSION: '2.1.2'
   environment: &env
     #「X: ${X:-smth}」は「コンテナ内のXという環境変数はホストマシンにXという環境変数の値があればそれを用い、なければ別の値を用いる」
-    # コマンドで別の環境を指定してサービスを実行できる
+    # 「RAILS_ENV=test docker-compose up rails」のようにコマンドで別の環境を指定してサービスを実行できる
     RAILS_ENV: ${RAILS_ENV:-development}      
     NODE_ENV: ${NODE_ENV:-development}
   # tmpフォルダをDockerのtmpsfsマウントを行うことで高速化しています
@@ -52,12 +52,19 @@ x-backend: &backend
     # この*envは*appを読み込んでいないと使用できません
     <<: *env
     DATABASE_URL: postgres://postgres:postgres@postgres:5432
+    # boosnapのキャッシュディレクトリを永続化したディレクトリに設定
     BOOTSNAP_CACHE_DIR: /bundle/bootsnap
     WEBPACKER_DEV_SERVER_HOST: webpacker
-    WEB_CONCURRENCY: 1
+    # コマンドを使用した時のhistoryが永続化されるので再度コンテナにアクセスした時に
+    # 以前使用したコマンドを履歴から使用できるようになる
     HISTFILE: /app/log/.bash_history
     PSQL_HISTFILE: /app/log/.psql_history
+    # `rails credentials:edit`コマンドでcredentialファイルを管理するのに使用する
     EDITOR: vi
+    # NOTE:説明が難しくてまだ理解できていないとりあえずメモリーに関係があるもの
+    MALLOC_ARENA_MAX: 2
+    # pumaのworker数設定
+    WEB_CONCURRENCY: ${WEB_CONCURRENCY:-1}
   depends_on:
     - postgres
 
@@ -75,6 +82,8 @@ services:
     ports:
       - '3000:3000'
 
+  # railsコンテナにアクセスする時はこちらを使う
+  # docker-compose run --rm runner を実行（テストやマイグレーションやrakeタスク何でもOK）
   runner:
     <<: *backend
     <<: *backend-volumes
