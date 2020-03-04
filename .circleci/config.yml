@@ -1,0 +1,165 @@
+version: 2.1
+executors:
+  base:
+    docker:
+      - image: circleci/ruby:2.6.5-node-browsers
+        environment:
+          # Bundlerのパス設定が書き換えられ`vendor/bundle`ではなくて`/usr/local/bundle`を参照してしまい`bundle exec`でエラーになる
+          # Bundlerのconfigファイル(pathの設定がされたもの)をworkspaceで永続化し`vendor/bundle`を参照するようにするための設定
+          BUNDLE_APP_CONFIG: .bundle
+      - image: circleci/postgres:12.0-alpine
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: test_sample_db
+          POSTGRES_PASSWORD: ""
+    environment:
+      - RAILS_ENV: test
+      - PGHOST: 127.0.0.1
+      - PGUSER: root
+    working_directory: ~/dodonki1223/eroge_release_db
+
+commands:
+  # 依存関係のキャッシュを行うコマンド類
+  # 詳しくは https://circleci.com/docs/ja/2.0/caching/
+  # Bundlerのキャッシュ系コマンド
+  # https://circleci.com/docs/ja/2.0/caching/#bundler-ruby
+  restore-bundle-cache:
+    steps:
+      - restore_cache:
+          keys:
+            - v1-gem-cache-docker-sample-{{ checksum "Gemfile.lock" }}
+            - v1-gem-cache-docker-sample-
+  save-bundle-cache:
+    steps:
+      - save_cache:
+          key: v1-gem-cache-docker-sample-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+            - ~/.bundle
+  # Yarnのキャッシュ系コマンド
+  # https://circleci.com/docs/ja/2.0/caching/#yarn-node
+  restore-yarn-cache:
+    steps:
+      - restore_cache:
+          keys:
+            - yarn-packages-docker-sample-v1-{{ checksum "yarn.lock" }}
+            - yarn-packages-docker-sample-v1-
+  save-yarn-cache:
+    steps:
+      - save_cache:
+          key: yarn-packages-docker-sample-v1-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+
+  # Bundlerのインストール系コマンド
+  install-bundler:
+    steps:
+      - run:
+          name: Install bundler(2.1.2)
+          command: gem install bundler:2.1.2
+  bundle-install:
+    steps:
+      - run:
+          name: Bundle install
+          command: bundle check --path=vendor/bundle || bundle install --jobs=4 --retry=3 --path vendor/bundle
+
+  # RSpecを実行するための設定系コマンド（主にフロントエンド部分）
+  test-client-settings:
+    steps:
+      - run:
+          name: RSpec Setup for webpacker
+          command: |
+            yarn install --check-files --cache-folder ~/.cache/yarn
+            NODE_ENV=production bin/rails webpacker:compile
+
+  # テストDB設定関連のコマンド
+  # https://circleci.com/docs/ja/2.0/postgres-config/
+  test-db-settings:
+    steps:
+      - run:
+          name: Create test database
+          command: |
+            cp config/{database_circleci,database}.yml
+            bin/rails db:schema:load --trace
+
+  # ワークスペース関連のコマンド
+  save-workspace:
+    steps:
+      - persist_to_workspace:
+          # working_directory からの相対パスか絶対パスを指定します
+          root: .
+          paths: .
+  using-workspace:
+    steps:
+      - attach_workspace:
+          # working_directory からの相対パスか絶対パスを指定します
+          at: .
+
+  # Linter関連のコマンド
+  linter:
+    steps:
+      - run:
+          name: Rubocop
+          command: bundle exec rubocop --require rubocop-rspec -D -P
+      - run:
+          name: Rails Best Practices
+          command: bundle exec rails_best_practices .
+      - run:
+          name: Brakeman
+          command: bundle exec brakeman
+
+  # テスト関連コマンド
+  testing:
+    steps:
+      - run:
+          name: Run all RSpec
+          command: bundle exec rspec --format progress
+
+  # テストカバレッジ関連のコマンド
+  # https://circleci.com/docs/2.0/code-coverage/#ruby
+  # https://github.com/colszowka/simplecov/#getting-started
+  store-coverage:
+    steps:
+      - store_artifacts:
+          path: coverage
+          destination: coverage-results
+
+jobs:
+  setup:
+    executor: base
+    steps:
+      - checkout
+      - restore-bundle-cache
+      - install-bundler
+      - bundle-install
+      - save-bundle-cache
+      - restore-yarn-cache
+      - test-client-settings
+      - save-yarn-cache
+      - test-db-settings
+      - save-workspace
+  lint:
+    executor: base
+    steps:
+      - using-workspace
+      - install-bundler
+      - linter
+  test:
+    executor: base
+    steps:
+      - using-workspace
+      - install-bundler
+      - testing
+      - store-coverage
+
+workflows:
+  version: 2.1
+  main:
+    jobs:
+      - setup
+      - lint:
+          requires:
+            - setup
+      - test:
+          requires:
+            - setup
