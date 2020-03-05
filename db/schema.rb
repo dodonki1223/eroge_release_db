@@ -49,4 +49,8 @@ ActiveRecord::Schema.define(version: 2020_03_05_015521) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_voice_actors_on_name", unique: true
   end
+
+  add_foreign_key "game_casts", "games"
+  add_foreign_key "game_casts", "voice_actors"
+  add_foreign_key "games", "brands"
 end
