@@ -10,9 +10,43 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 2020_03_05_015521) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "brands", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_brands_on_name", unique: true
+  end
+
+  create_table "game_casts", force: :cascade do |t|
+    t.integer "game_id", null: false
+    t.integer "voice_actor_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["game_id"], name: "index_game_casts_on_game_id"
+    t.index ["voice_actor_id"], name: "index_game_casts_on_voice_actor_id"
+  end
+
+  create_table "games", force: :cascade do |t|
+    t.string "title", null: false
+    t.integer "brand_id", null: false
+    t.date "date", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["brand_id"], name: "index_games_on_brand_id"
+    t.index ["date"], name: "index_games_on_date"
+    t.index ["title"], name: "index_games_on_title", unique: true
+  end
+
+  create_table "voice_actors", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_voice_actors_on_name", unique: true
+  end
 end
