@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateVoiceActors < ActiveRecord::Migration[6.0]
   def change
     create_table :voice_actors do |t|
