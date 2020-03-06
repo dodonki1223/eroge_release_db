@@ -9,7 +9,7 @@ x-app: &app
     dockerfile: ./.dockerdev/Dockerfile
     args:
       RUBY_VERSION: '2.6.5'
-      PG_MAJOR: '12'
+      PG_MAJOR: '11'
       NODE_MAJOR: '12'
       YARN_VERSION: '1.21.1'
       BUNDLER_VERSION: '2.1.2'
