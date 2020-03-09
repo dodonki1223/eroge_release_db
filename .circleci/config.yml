@@ -4,8 +4,6 @@ executors:
     docker:
       - image: circleci/ruby:2.6.5-node-browsers
         environment:
-          # Bundlerのパス設定が書き換えられ`vendor/bundle`ではなくて`/usr/local/bundle`を参照してしまい`bundle exec`でエラーになる
-          # Bundlerのconfigファイル(pathの設定がされたもの)をworkspaceで永続化し`vendor/bundle`を参照するようにするための設定
           BUNDLE_APP_CONFIG: .bundle
       - image: circleci/postgres:12.0-alpine
         environment:
@@ -85,13 +83,11 @@ commands:
   save-workspace:
     steps:
       - persist_to_workspace:
-          # working_directory からの相対パスか絶対パスを指定します
           root: .
           paths: .
   using-workspace:
     steps:
       - attach_workspace:
-          # working_directory からの相対パスか絶対パスを指定します
           at: .
 
   # Linter関連のコマンド
