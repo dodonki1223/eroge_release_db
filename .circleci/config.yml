@@ -129,6 +129,18 @@ commands:
       - run:
           name: Set deploy db settings(Rewrite database.yml)
           command: cp config/{database_circleci_deploy,database}.yml
+  bastion-port-forwarding:
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "09:73:fb:0a:d8:e2:b9:0c:e8:7c:23:7e:65:c0:1c:44"
+      - run:
+          name: Bastion server port forwarding
+          # 「-o StrictHostKeyChecking=no」は下記の対話処理を省略するために追加
+          #   The authenticity of host 'hoge (fuga)' can't be established.
+          #   RSA key fingerprint is hoge
+          #   Are you sure you want to continue connecting (yes/no)? 
+          command: ssh -o StrictHostKeyChecking=no -f -N -L ${PROD_EROGE_RELEASE_DB_LOCAL_PORT}:${PROD_EROGE_RELEASE_DB_HOST}:${PROD_EROGE_RELEASE_DB_PORT} ${AWS_BASTION_USER}@${AWS_BASTION_HOST} 
 jobs:
   setup:
     executor: base
@@ -162,6 +174,7 @@ jobs:
       - using-workspace
       - install-bundler
       - deploy-db-settings
+      - bastion-port-forwarding
 
 workflows:
   version: 2.1
