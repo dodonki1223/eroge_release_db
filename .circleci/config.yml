@@ -123,6 +123,12 @@ commands:
           path: coverage
           destination: coverage-results
 
+  # デプロイ関連コマンド
+  deploy-db-settings:
+    steps:
+      - run:
+          name: Set deploy db settings(Rewrite database.yml)
+          command: cp config/{database_circleci_deploy,database}.yml
 jobs:
   setup:
     executor: base
@@ -150,6 +156,12 @@ jobs:
       - install-bundler
       - testing
       - store-coverage
+  deploy:
+    executor: base
+    steps:
+      - using-workspace
+      - install-bundler
+      - deploy-db-settings
 
 workflows:
   version: 2.1
@@ -162,3 +174,10 @@ workflows:
       - test:
           requires:
             - setup
+      - deploy:
+          requires:
+            - lint
+            - test
+          filters:
+            branches:
+              only: master

@@ -1,0 +1,12 @@
+default: &default
+  adapter: postgresql
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  encoding: utf8
+  username: <%= ENV['PROD_EROGE_RELEASE_DB_USER'] %>
+  password: <%= ENV['PROD_EROGE_RELEASE_DB_PASSWORD'] %>
+  host: 127.0.0.1
+  port: <%= ENV['PROD_EROGE_RELEASE_DB_LOCAL_PORT'] %>
+  database: <%= ENV['PROD_EROGE_RELEASE_DB_NAME'] %>
+
+production:
+  <<: *default
