@@ -141,6 +141,17 @@ commands:
           #   RSA key fingerprint is hoge
           #   Are you sure you want to continue connecting (yes/no)? 
           command: ssh -o StrictHostKeyChecking=no -f -N -L ${PROD_EROGE_RELEASE_DB_LOCAL_PORT}:${PROD_EROGE_RELEASE_DB_HOST}:${PROD_EROGE_RELEASE_DB_PORT} ${AWS_BASTION_USER}@${AWS_BASTION_HOST} 
+  migration-db:
+    steps:
+      # master.keyを環境変数から作成する
+      # https://railsguides.jp/5_2_release_notes.html#credential%E7%AE%A1%E7%90%86
+      - run:
+          name: Create master.key file
+          command: echo $RAILS_MASTER_KEY > config/master.key
+      - run:
+          name: DB migration
+          command: RAILS_ENV=production bin/rake db:migrate
+
 jobs:
   setup:
     executor: base
@@ -175,6 +186,7 @@ jobs:
       - install-bundler
       - deploy-db-settings
       - bastion-port-forwarding
+      - migration-db
 
 workflows:
   version: 2.1
