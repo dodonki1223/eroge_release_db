@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :brand do
-    sequence(:name) { |n| "brand_name_#{n}" }
+    sequence(:name) { |n| "BrandName-#{n}" }
     url { 'http://example.com' }
   end
 end
