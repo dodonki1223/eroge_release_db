@@ -71,3 +71,7 @@ Style/BlockComments:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
+
+# https://rubocop-rspec.readthedocs.io/en/latest/cops_rspec/#rspecnestedgroups
+RSpec/NestedGroups:
+  Max: 5

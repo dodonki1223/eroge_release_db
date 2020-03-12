@@ -17,6 +17,7 @@ RSpec.describe Game, type: :model do
         it { expect(game).to be_invalid }
         it { expect(errors[:title]).to match nil_error_message }
       end
+
       context 'when the record exists' do
         before { create(:game, title: 'ホゲフガ') }
 
@@ -25,8 +26,9 @@ RSpec.describe Game, type: :model do
 
           it { expect(game).to be_valid }
         end
+
         context 'when same title' do
-          let(:game) { Game.create(title: 'ホゲフガ') }
+          let(:game) { described_class.create(title: 'ホゲフガ') }
           let(:uniqueness_error_message) { ['同じタイトルのゲームは登録できません'] }
 
           it { expect(game).to be_invalid }
