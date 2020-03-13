@@ -75,3 +75,8 @@ Metrics/BlockLength:
 # https://rubocop-rspec.readthedocs.io/en/latest/cops_rspec/#rspecnestedgroups
 RSpec/NestedGroups:
   Max: 5
+
+# https://rubocop.readthedocs.io/en/latest/cops_style/#stylesymbolarray
+# Use EnforcedStyle: brackets
+Style/SymbolArray:
+  Enabled: false
