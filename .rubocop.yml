@@ -54,7 +54,7 @@ Style/StringLiterals:
 
 # https://rubocop.readthedocs.io/en/latest/cops_layout/#layoutlinelength
 Layout/LineLength:
-  Max: 120
+  Max: 150
 
 # https://rubocop.readthedocs.io/en/latest/cops_style/#stylefrozenstringliteralcomment
 Style/FrozenStringLiteralComment:
