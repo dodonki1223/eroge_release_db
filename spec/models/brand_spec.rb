@@ -15,6 +15,27 @@ RSpec.describe Brand, type: :model do
         it { expect(name_nil).to be_invalid }
         it { expect(nil_error_message).to match ['ブランド名は空で登録できません'] }
       end
+
+      context 'when the record exists' do
+        before { create(:brand, name: 'ホゲフガ') }
+
+        context 'when unique' do
+          let(:name_unique) { create(:brand) }
+
+          it { expect(name_unique).to be_valid }
+        end
+
+        context 'when no unique' do
+          let(:name_not_unique) { described_class.create(name: 'ホゲフガ') }
+          let(:not_unique_error_message) do
+            name_not_unique.valid?
+            name_not_unique.errors[:name]
+          end
+
+          it { expect(name_not_unique).to be_invalid }
+          it { expect(not_unique_error_message).to match ['同じブランド名は登録できません'] }
+        end
+      end
     end
   end
 end
