@@ -4,18 +4,16 @@ require 'rails_helper'
 
 RSpec.describe Brand, type: :model do
   describe 'validations' do
-    let(:errors) do
-      brand.valid?
-      brand.errors
-    end
-
     context 'when name' do
       context 'when nil' do
-        let(:brand) { build(:brand, name: nil) }
-        let(:nil_error_message) { ['ブランド名は空で登録できません'] }
+        let(:name_nil) { build(:brand, name: nil) }
+        let(:nil_error_message) do
+          name_nil.valid?
+          name_nil.errors[:name]
+        end
 
-        it { expect(brand).to be_invalid }
-        it { expect(errors[:name]).to match nil_error_message }
+        it { expect(name_nil).to be_invalid }
+        it { expect(nil_error_message).to match ['ブランド名は空で登録できません'] }
       end
     end
   end

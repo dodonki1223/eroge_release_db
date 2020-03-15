@@ -11,49 +11,61 @@ RSpec.describe Game, type: :model do
 
     describe 'title' do
       context 'when nil' do
-        let(:game) { build(:game, title: nil) }
-        let(:nil_error_message) { ['タイトルは空で登録できません'] }
+        let(:title_nil) { build(:game, title: nil) }
+        let(:nil_error_message) do
+          title_nil.valid?
+          title_nil.errors[:title]
+        end
 
-        it { expect(game).to be_invalid }
-        it { expect(errors[:title]).to match nil_error_message }
+        it { expect(title_nil).to be_invalid }
+        it { expect(nil_error_message).to match ['タイトルは空で登録できません'] }
       end
 
       context 'when the record exists' do
         before { create(:game, title: 'ホゲフガ') }
 
-        context 'when not same title' do
-          let(:game) { create(:game) }
+        context 'when unique' do
+          let(:title_unique) { create(:game) }
 
-          it { expect(game).to be_valid }
+          it { expect(title_unique).to be_valid }
         end
 
-        context 'when same title' do
-          let(:game) { described_class.create(title: 'ホゲフガ') }
-          let(:uniqueness_error_message) { ['同じタイトルのゲームは登録できません'] }
+        context 'when not unique' do
+          let(:title_not_unique) { described_class.create(title: 'ホゲフガ') }
+          let(:not_unique_error_message) do
+            title_not_unique.valid?
+            title_not_unique.errors[:title]
+          end
 
-          it { expect(game).to be_invalid }
-          it { expect(errors[:title]).to match uniqueness_error_message }
+          it { expect(title_not_unique).to be_invalid }
+          it { expect(not_unique_error_message).to match ['同じタイトルのゲームは登録できません'] }
         end
       end
     end
 
     describe 'brand_id' do
       context 'when nil' do
-        let(:game) { build(:game, brand_id: nil) }
-        let(:nil_error_message) { ['ブランドIDは空で登録できません'] }
+        let(:brand_id_nil) { build(:game, brand_id: nil) }
+        let(:nil_error_message) do
+          brand_id_nil.valid?
+          brand_id_nil.errors[:brand_id]
+        end
 
-        it { expect(game).to be_invalid }
-        it { expect(errors[:brand_id]).to match nil_error_message }
+        it { expect(brand_id_nil).to be_invalid }
+        it { expect(nil_error_message).to match ['ブランドIDは空で登録できません'] }
       end
     end
 
     describe 'date' do
       context 'when nil' do
-        let(:game) { build(:game, date: nil) }
-        let(:nil_error_message) { ['発売日は空で登録できません'] }
+        let(:date_nil) { build(:game, date: nil) }
+        let(:nil_error_message) do
+          date_nil.valid?
+          date_nil.errors[:date]
+        end
 
-        it { expect(game).to be_invalid }
-        it { expect(errors[:date]).to match nil_error_message }
+        it { expect(date_nil).to be_invalid }
+        it { expect(nil_error_message).to match ['発売日は空で登録できません'] }
       end
     end
   end
