@@ -29,5 +29,26 @@ RSpec.describe GameCast, type: :model do
         it { expect(nil_error_message).to match ['声優IDは空で登録できません'] }
       end
     end
+
+    describe 'game_id and voice_actor_id' do
+      let!(:game_cast) { create(:game_cast) }
+
+      context 'when unique' do
+        let(:unique_data) { create(:game_cast) }
+
+        it { expect(unique_data).to be_valid }
+      end
+
+      context 'when not unique' do
+        let(:not_unique_data) { described_class.create(game_id: game_cast.game_id, voice_actor_id: game_cast.voice_actor_id) }
+        let(:not_unique_error_message) do
+          not_unique_data.valid?
+          not_unique_data.errors[:game_id]
+        end
+
+        it { expect(not_unique_data).to be_invalid }
+        it { expect(not_unique_error_message).to match ['既にゲームIDと声優IDの組み合わせが存在しています'] }
+      end
+    end
   end
 end
