@@ -38,4 +38,10 @@ RSpec.describe Brand, type: :model do
       end
     end
   end
+
+  describe 'destroy' do
+    let!(:brand) { create(:game).brand }
+
+    it { expect { brand.destroy } .to change(Game, :count).by(-1) }
+  end
 end
