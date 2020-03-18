@@ -1,0 +1,12 @@
+# Document: https://voormedia.github.io/rails-erd/customise.html
+attributes:
+  - content
+  - foreign_key
+  - primary_keys
+  - inheritance
+  - timestamps
+sort: false
+title: 'ErogeReleaseDb domain model'
+filetype: png
+filename: db/erd/eroge_release_db
+exclude: 'ActiveRecord::InternalMetadata, ActiveRecord::SchemaMigration, primary::SchemaMigration'
