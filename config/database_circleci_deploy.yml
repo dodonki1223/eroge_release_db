@@ -7,6 +7,9 @@ default: &default
   host: 127.0.0.1
   port: <%= ENV['PROD_EROGE_RELEASE_DB_LOCAL_PORT'] %>
   database: <%= ENV['PROD_EROGE_RELEASE_DB_NAME'] %>
+  # テーブルを作成するスキーマ名を設定する
+  # 設定しないとデフォルトのpublicに作成されてしまうため
+  schema_search_path: <%= ENV['PROD_EROGE_RELEASE_DB_SCHEMA_SEARCH_PATH'] %>
 
 production:
   <<: *default
