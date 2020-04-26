@@ -17,6 +17,7 @@ RDSにてPostgreSQLのMaster、Slave構成を構築する
 ## DB サブネットグループを作成する
 
 MasterとSlaveをどのサブネットでDBインスタンスを起動するかのための設定になります  
+
 詳しくは以下の記事を読みましょう
 
 - [VPC の DB インスタンスの使用 - Amazon Relational Database Service](https://docs.aws.amazon.com/ja_jp/AmazonRDS/latest/UserGuide/USER_VPC.WorkingWithRDSInstanceinaVPC.html#USER_VPC.Subnets)
@@ -40,3 +41,26 @@ MasterとSlaveをどのサブネットでDBインスタンスを起動するか�
 最後に `作成` ボタンをクリックして終了です
 
 ![04_create_subnet_group_add_subnet](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/04_create_subnet_group_add_subnet.png)
+
+## パラメータグループの作成
+
+RDSはパラメータグループを使用してDBインスタンスの設定を行います  
+パラメータグループを使用しないでDBインスタンスを作成するとデフォルトのパラメータグループが使用されます。この**デフォルトのパラメータグループは設定を変更することができない**ので必ず設定することをオススメします  
+
+詳しくは以下の記事を読みましょう
+
+- [DB パラメータグループを使用する - Amazon Relational Database Service](https://docs.aws.amazon.com/ja_jp/AmazonRDS/latest/UserGuide/USER_WorkingWithParamGroups.html)
+
+### パラメータグループ作成画面を開く
+
+左のメニューの `パラメータグループ` をクリックし右上の `パラメータグループの作成` をクリックします
+
+![05_create_parameter_group](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/05_create_parameter_group.png)
+
+### パラメータグループの詳細
+
+`パラメータグループファミリー`、`グループ名`、`説明` を入力します  
+`パラメータグループファミリー` にはPostgreSQLを選択します  
+最後に作成をクリックします
+
+![06_create_paraemter_group_detail](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/06_create_paraemter_group_detail.png)
