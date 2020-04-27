@@ -64,3 +64,56 @@ RDSはパラメータグループを使用してDBインスタンスの設定を
 最後に作成をクリックします
 
 ![06_create_paraemter_group_detail](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/06_create_paraemter_group_detail.png)
+
+## RDSへのセキュリティグループを作成
+
+RDSへのセキュリティを高めるために踏み台サーバーからのアクセスのみを許可するセキュリティグループを作成します  
+**RDSの設定画面でこのセキュリティグループをアタッチさせます**
+
+### セキュリティグループ作成画面を開く
+
+VPCのコンソール画面を開いて左のメニューの `セキュリティグループ` をクリックし左上の `セキュリティグループの作成` をクリックします
+
+![07_create_security_group_db](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/07_create_security_group_db.png)
+
+### セキュリティグループの作成
+
+`セキュリティグループ名`、`説明`、`VPC`を入力し `作成` ボタンをクリックします  
+**注意：VPCはデフォルトではなく作成したVPCをちゃんと選択するようにしてください**
+
+![08_create_security_group_db](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/08_create_security_group_db.png)
+
+`閉じる` ボタンをクリックして作成画面を閉じます
+
+![09_create_security_group_db](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/09_create_security_group_db.png)
+
+### セキュリティグループに名前を付ける
+
+デフォルトだと `name` が空なので `Name` カラムの右端の鉛筆ボタンをクリックしてわかりやすい名前をつけておきます
+
+![10_create_security_group_db](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/10_create_security_group_db.png)
+
+### インバウンドのルール設定
+
+`インバウンドのルール` タブをクリックして `ルールの編集` をクリックします
+
+![11_create_security_group_db](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/11_create_security_group_db.png)
+
+画面が遷移したら `ルールの追加` をクリックします
+
+![12_create_security_group_db](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/12_create_security_group_db.png)
+
+タイプをクリックし `PostgreSQL` と `SSH` を追加します  
+ソースの部分には `踏み台サーバーのセキュリティグループ` を選択します  
+
+**踏み台サーバーのセキュリティグループを選択することで踏み台サーバーのセキュリティグループを持つインスタンスからのみアクセスが許可されるようになります**
+
+最後に `説明` を入力して `ルールの保存` をクリックします
+
+![13_create_security_group_db](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/13_create_security_group_db.png)
+
+`閉じる` ボタンをクリックします
+
+![14_create_security_group_db](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/14_create_security_group_db.png)
+
+以上でセキュリティグループの作成は完了です
