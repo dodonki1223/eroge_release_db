@@ -305,7 +305,7 @@ Performance Insightsに関してはデフォルトのままで良いでしょう
 
 ## PostgreSQLについて
 
-PostgreSQLで環境構築をするにあたって必要な用語をおさらいします
+PostgreSQLで環境構築をするにあたって必要な用語を最低限おさらいします
 
 ### データベースクラスタ
 
@@ -361,3 +361,26 @@ CREATE USER name;
 - [21.1. データベースロール](https://www.postgresql.jp/document/11/html/database-roles.html)
 - [21.2. ロールの属性](https://www.postgresql.jp/document/11/html/role-attributes.html)
 - [21.3. ロールのメンバ資格](https://www.postgresql.jp/document/11/html/role-membership.html)
+
+## ユーザーとロールの管理を行う
+
+AWSのブログ記事を参考に `ユーザーとロールを管理するためのベストプラクティス` を元に環境を構築していきます  
+以下の２つの記事を参考に作成していきます
+
+- [PostgreSQL ユーザーとロールの管理 | Amazon Web Services ブログ](https://aws.amazon.com/jp/blogs/news/managing-postgresql-users-and-roles/)
+- [Managing PostgreSQL users and roles | AWS Database Blog](https://aws.amazon.com/jp/blogs/database/managing-postgresql-users-and-roles/)
+
+### 目指すべきゴール
+
+![managing-postgresql-users-1](https://d2908q01vomqb2.cloudfront.net/887309d048beef83ad3eabf2a79a64a389ab1c9f/2019/03/01/managing-postgresql-users-1.gif)
+
+> - マスターユーザーを使用して、`readonly` や `readwrite` などのアプリケーションまたはユースケースごとにロールを作成します
+> - これらのロールがさまざまなデータベースオブジェクトにアクセスできるように権限を追加します。例えば、`readonly` ロールは `SELECT` クエリのみを実行できます
+> - 機能にとって最低限必要な権限をロールに付与します
+> - `app_user` や `reporting_user` のように、アプリケーションごとまたは個別の機能ごとに新しいユーザーを作成します
+> - 適切なロールをこれらのユーザーに割り当てて、ロールと同じ権限をすばやく付与します。例えば、`readwrite` ロールを `app_user` に付与し、`readonly` ロールを `reporting_user` に付与します
+> - いつでも、権限を取り消すためにユーザーからロールを削除できます
+
+上記、画像と文章は [PostgreSQL ユーザーとロールの管理 | Amazon Web Services ブログ](https://aws.amazon.com/jp/blogs/news/managing-postgresql-users-and-roles/) より引用
+
+言っていることは `読み込み権限`、`読み込み・書き込み権限` などのグループロールを作成し、それを用途に応じたユーザーに付与する  
