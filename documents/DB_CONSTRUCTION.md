@@ -341,3 +341,23 @@ RDSで作成した場合はデータベースクラスタに `RDSの設定画面
 詳しくは以下のドキュメントを確認してください
 
 - [5.8. スキーマ](https://www.postgresql.jp/document/11/html/ddl-schemas.html)
+
+### ロールについて
+
+ロールはデータベースへの接続承認を行う。ロールにはデータベースユーザ(データベースへログインするユーザー)とデータベースユーザのグループと分けられます
+
+ロールを作成するSQLには以下の２つがあります  
+２つの違いはLOGIN属性を持つかどうかです 
+
+```sql
+-- データベースユーザーのグループを作成
+CREATE ROLE name;
+-- データベースユーザーを作成
+CREATE USER name;
+```
+
+詳しくは以下のドキュメントを確認してください
+
+- [21.1. データベースロール](https://www.postgresql.jp/document/11/html/database-roles.html)
+- [21.2. ロールの属性](https://www.postgresql.jp/document/11/html/role-attributes.html)
+- [21.3. ロールのメンバ資格](https://www.postgresql.jp/document/11/html/role-membership.html)
