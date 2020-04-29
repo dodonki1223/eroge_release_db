@@ -298,3 +298,8 @@ Performance Insightsに関してはデフォルトのままで良いでしょう
 これでRDS構築完了です！
 
 ![35_create_rds_create_button](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/35_create_rds_create_button.png)
+
+料金の詳細については以下のドキュメントを確認してください
+
+- [料金 - Amazon RDS for PostgreSQL | AWS](https://aws.amazon.com/jp/rds/postgresql/pricing/?pg=pr&loc=3)
+
