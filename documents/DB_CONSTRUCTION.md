@@ -303,3 +303,41 @@ Performance Insightsに関してはデフォルトのままで良いでしょう
 
 - [料金 - Amazon RDS for PostgreSQL | AWS](https://aws.amazon.com/jp/rds/postgresql/pricing/?pg=pr&loc=3)
 
+## PostgreSQLについて
+
+PostgreSQLで環境構築をするにあたって必要な用語をおさらいします
+
+### データベースクラスタ
+
+データベースクラスタはデータベースの集合になります  
+
+![36_postgresql_database_cluster](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/36_postgresql_database_cluster.png)
+
+RDSで作成した場合はデータベースクラスタに `RDSの設定画面で設定した最初のデータベース`、`postgres`、`rdsadin`、`tempalte0`、`template1` が作成された状態になっています
+
+![28_create_rds_add_settings_default_database](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/28_create_rds_add_settings_default_database.png)
+
+詳しくは以下のドキュメントを確認してください
+
+- [18.2. データベースクラスタの作成](https://www.postgresql.jp/document/11/html/creating-cluster.html)
+
+### データベース
+
+データベースはデータベースオブジェクト（テーブル、ビュー、関数および演算子など）の集合に名前をつけたものです
+
+![37_postgresql_database](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/37_postgresql_database.png)
+
+詳しくは以下のドキュメントを確認してください
+
+- [22.1. 概要](https://www.postgresql.jp/document/11/html/manage-ag-overview.html)
+- [22.2. データベースの作成](https://www.postgresql.jp/document/11/html/manage-ag-createdb.html)
+
+### スキーマ
+
+スキーマはデータベース内のデータベースオブジェクト（テーブル、ビュー、関数および演算子など）をグループ化することができます  
+
+![38_postgresql_schema](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/38_postgresql_schema.png)
+
+詳しくは以下のドキュメントを確認してください
+
+- [5.8. スキーマ](https://www.postgresql.jp/document/11/html/ddl-schemas.html)
