@@ -268,10 +268,11 @@ Performance Insightsに関してはデフォルトのままで良いでしょう
 
 ![32_create_rds_add_settings_log_export](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/32_create_rds_add_settings_log_export.png)
 
-ログに関して詳しくは以下のドキュメントを確認して下さい
+ログに関しては以下のドキュメントを確認して下さい
 
 - [Amazon RDS データベースログファイル - Amazon Relational Database Service](https://docs.aws.amazon.com/ja_jp/AmazonRDS/latest/UserGuide/USER_LogAccess.html)
 - [PostgreSQL データベースのログファイル - Amazon Relational Database Service](https://docs.aws.amazon.com/ja_jp/AmazonRDS/latest/UserGuide/USER_LogAccess.Concepts.PostgreSQL.html)
+- [Amazon RDS または Aurora for MySQL のログを CloudWatch に公開](https://aws.amazon.com/jp/premiumsupport/knowledge-center/rds-aurora-mysql-logs-cloudwatch/)
 
 #### メンテナンス
 
