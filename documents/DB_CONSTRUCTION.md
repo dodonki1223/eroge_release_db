@@ -383,7 +383,7 @@ AWSのブログ記事を参考に `ユーザーとロールを管理するため
 
 上記、画像と文章は [PostgreSQL ユーザーとロールの管理 | Amazon Web Services ブログ](https://aws.amazon.com/jp/blogs/news/managing-postgresql-users-and-roles/) より引用
 
-言っていることは `読み込み権限`、`読み込み・書き込み権限` などのグループロールを作成し、それを用途に応じたユーザーに付与する  
+言っていることは `読み取り権限`、`読み取り・書き込み権限` などのグループロールを作成し、それを用途に応じたユーザーに付与する  
 
 ### publicスキーマ
 
@@ -411,7 +411,7 @@ PostgreSQLの公式のドキュメントに以下のように書かれていま�
 REVOKE CREATE ON SCHEMA public FROM PUBLIC;
 
 -- publicロールがデータベースに接続する機能を無効にする
--- eroge_release_dbはデータベース名です
+-- ※eroge_release_dbはデータベース名です
 REVOKE ALL ON DATABASE eroge_release_db FROM PUBLIC;
 ```
 
@@ -448,3 +448,34 @@ SELECT current_schema();
 `search_path` については公式のドキュメントを確認してください
 
 - [5.8.3. スキーマ検索パス](https://www.postgresql.jp/document/11/html/ddl-schemas.html#DDL-SCHEMAS-PATH)
+
+### 読み取り権限ロールを作成する
+
+データの読み取りのみを許可したロールを作成します  
+データの更新ができないロールになります  
+
+また今後作成されるテーブルやビューに `readonly` ロールがアクセスできるように権限を自動付与する
+
+以下のSQLを実行します
+
+```sql
+-- readonlyという名前のロールを作成(パスワードも権限もないロール)
+CREATE ROLE readonly;
+
+-- readonlyロールはeroge_release_dbへのアクセス権限を付与する
+-- ※eroge_release_dbはデータベース名です
+GRANT CONNECT ON DATABASE eroge_release_db TO readonly;
+
+-- readonlyロールにスキーマへのアクセス権限を付与する
+-- ※eroge_release_db_schemaはスキーマ名です
+GRANT USAGE ON SCHEMA eroge_release_db_schema TO readonly;
+
+-- スキーマ内のすべてのテーブルとビューへのアクセス権限を付与する
+-- ※eroge_release_db_schemaはスキーマ名です
+GRANT SELECT ON ALL TABLES IN SCHEMA eroge_release_db_schema TO readonly;
+
+-- 今後新しいテーブルやビューが作成された時はアクセス権限がない状態になる
+-- なので今後新しいテーブルやビューが作成された時はアクセス権限を自動的に付与する
+-- ※eroge_release_db_schemaはスキーマ名です
+ALTER DEFAULT PRIVILEGES IN SCHEMA eroge_release_db_schema GRANT SELECT ON TABLES TO readonly;
+```
