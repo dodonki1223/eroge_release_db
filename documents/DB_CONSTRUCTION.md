@@ -383,7 +383,7 @@ AWSのブログ記事を参考に `ユーザーとロールを管理するため
 
 上記、画像と文章は [PostgreSQL ユーザーとロールの管理 | Amazon Web Services ブログ](https://aws.amazon.com/jp/blogs/news/managing-postgresql-users-and-roles/) より引用
 
-言っていることは `読み取り権限`、`読み取り・書き込み権限` などのグループロールを作成し、それを用途に応じたユーザーに付与する  
+言っていることは `読み取り権限`、`読み取り/書き込み権限` などのグループロールを作成し、それを用途に応じたユーザーに付与する  
 
 ### publicスキーマ
 
@@ -417,7 +417,7 @@ REVOKE ALL ON DATABASE eroge_release_db FROM PUBLIC;
 
 ### スキーマを作成する
 
-本来ならば作成するユーザーごとにスキーマを作成するのが良さそうですが今回はスキーマを1つだけ作成してすべてのユーザーはそのスキーマをみるようにします
+本来ならば作成するユーザーごとにスキーマを作成するのが良いのですが今回はスキーマを1つだけ作成してすべてのユーザーはそのスキーマをみるようにします
 
 スキーマのオススメの使用パターンは公式のドキュメントを確認してください
 
@@ -426,28 +426,10 @@ REVOKE ALL ON DATABASE eroge_release_db FROM PUBLIC;
 以下のSQLを実行してスキーマを作成します
 
 ```sql
--- 現在のデフォルトのスキーマがpublicか確認する
-SELECT current_schema();
-
 -- スキーマの作成
 -- ※eroge_release_db_schemaはスキーマ名です
 CREATE SCHEMA eroge_release_db_schema;
-
--- デフォルトはpublicになっているため作成したスキーマに変更します
--- これをやらないといちいちスキーマ名を追加する必要があります
--- 下記のような感じになりだるい……
--- SELECT * FROM eroge_release_db_schema.brands;
--- ※eroge_release_db_schemaはスキーマ名です
-SET search_path TO eroge_release_db_schema;
-
--- 現在のデフォルトのスキーマがeroge_release_db_schemaに変わったか確認する
--- ※eroge_release_db_schemaはスキーマ名です
-SELECT current_schema();
 ```
-
-`search_path` については公式のドキュメントを確認してください
-
-- [5.8.3. スキーマ検索パス](https://www.postgresql.jp/document/11/html/ddl-schemas.html#DDL-SCHEMAS-PATH)
 
 ### 読み取り権限ロールを作成する
 
@@ -517,4 +499,49 @@ GRANT USAGE ON ALL SEQUENCES IN SCHEMA eroge_release_db_schema TO readwrite;
 -- なので今後新しいシーケンスが作成された時はアクセス権限を自動的に付与する
 -- ※eroge_release_db_schemaはスキーマ名です
 ALTER DEFAULT PRIVILEGES IN SCHEMA eroge_release_db_schema GRANT USAGE ON SEQUENCES TO readwrite;
+```
+
+### ユーザーを作成しロールを付与する
+
+ログイン用のユーザーを作成し先程作成したロールを付与します  
+`読み取り` と `読み取り/書き込み` 用それぞれのユーザーを作成します  
+
+- app_readonly (読み取り)
+- app (読み取り/書き込み)
+
+```sql
+-- readonlyユーザーの作成し 読み取り権限ロール を付与する
+-- ※app_readonlyはユーザー名です、passwordはログインする時のパスワードです
+CREATE USER app_readonly WITH PASSWORD 'password';
+GRANT readonly TO app_readonly;
+
+-- readwriteユーザーの作成し 読み取り/書き込み権限ロール を付与する
+-- ※appはユーザー名です、passwordはログインする時のパスワードです
+CREATE USER app WITH PASSWORD 'password';
+GRANT readwrite TO app;
+```
+
+### ユーザーとロールが作成されたか確認
+
+`app`、`app_readonly` ユーザーが表示され、ロールがそれぞれちゃんと付与されているか確認してください
+
+```sql
+-- 権限の確認SQL
+  SELECT r.rolname
+       , ARRAY(
+                   SELECT b.rolname
+                     FROM pg_catalog.pg_auth_members m
+                     JOIN pg_catalog.pg_roles        b 
+                       ON m.roleid = b.oid
+                    WHERE m.member = r.oid
+               ) AS memberof
+    FROM pg_catalog.pg_roles r
+   WHERE r.rolname NOT IN (
+                               'pg_execute_server_program', 'pg_monitor',           'pg_read_all_settings',
+                               'pg_read_all_stats',         'pg_read_server_files', 'pg_stat_scan_tables',
+                               'pg_write_server_files',     'rds_ad',               'rdsadmin',                  
+                               'rds_password',              'pg_signal_backend',    'rds_iam',                   
+                               'rds_replication',           'rdsrepladmin',         'rds_superuser'
+                          )
+ORDER BY r.rolname;
 ```
