@@ -479,3 +479,42 @@ GRANT SELECT ON ALL TABLES IN SCHEMA eroge_release_db_schema TO readonly;
 -- ※eroge_release_db_schemaはスキーマ名です
 ALTER DEFAULT PRIVILEGES IN SCHEMA eroge_release_db_schema GRANT SELECT ON TABLES TO readonly;
 ```
+
+### 読み取り/書き込み権限ロールを作成する
+
+データの読み取りにプラスして書き込みを許可したロールを作成します
+
+また今後作成されるテーブルやビューに `readwrite` ロールがアクセスできるように権限を自動付与する
+
+以下のSQLを実行します
+
+```sql
+-- readwriteという名前のロールを作成(パスワードも権限もないロール)
+CREATE ROLE readwrite;
+
+-- readwriteロールはeroge_release_dbへのアクセス権限を付与する
+-- ※eroge_release_dbはデータベース名です
+GRANT CONNECT ON DATABASE eroge_release_db TO readwrite;
+
+-- readwriteロールにスキーマへ新しいObjectを作成する権限を付与する
+-- ※eroge_release_db_schemaはスキーマ名です
+GRANT USAGE, CREATE ON SCHEMA eroge_release_db_schema TO readwrite;
+
+-- スキーマ内のすべてのテーブルとビューへのアクセス権限、及び追加・削除・更新の権限を付与する
+-- ※eroge_release_db_schemaはスキーマ名です
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA eroge_release_db_schema TO readwrite;
+
+-- 今後新しいテーブルやビューが作成された時はアクセス権限、及び追加・削除・更新の権限がない状態になる
+-- なので今後新しいテーブルやビューが作成された時はアクセス権限、及び追加・削除・更新の権限を自動的に付与する
+-- ※eroge_release_db_schemaはスキーマ名です
+ALTER DEFAULT PRIVILEGES IN SCHEMA eroge_release_db_schema GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO readwrite;
+
+-- シーケンスも使用する必要があるためシーケンスへのアクセス権限を付与する
+-- ※eroge_release_db_schemaはスキーマ名です
+GRANT USAGE ON ALL SEQUENCES IN SCHEMA eroge_release_db_schema TO readwrite;
+
+-- 今後新しいシーケンスが作成された時はアクセス権限がない状態になる
+-- なので今後新しいシーケンスが作成された時はアクセス権限を自動的に付与する
+-- ※eroge_release_db_schemaはスキーマ名です
+ALTER DEFAULT PRIVILEGES IN SCHEMA eroge_release_db_schema GRANT USAGE ON SEQUENCES TO readwrite;
+```
