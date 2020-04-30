@@ -565,9 +565,12 @@ ORDER BY r.rolname;
 ### デフォルトのsearch_pathを変更する
 
 デフォルトの `search_path` 設定だと作成した `eroge_release_db_schema` 名を省略してテーブルの検索をすることができません  
-`search_path` 設定を変更して`eroge_release_db_schema` 名を省略してもテーブルの検索をできるようにします
-
+`search_path` 設定を変更して`eroge_release_db_schema` 名を省略してもテーブルの検索をできるようにします  
 **eroge_release_db_schema を作成したスキーマ名に置き換えてください**
+
+search_pathについて詳しくは以下のドキュメントを確認してください
+
+- [5.8.3. スキーマ検索パス](https://www.postgresql.jp/document/11/html/ddl-schemas.html#DDL-SCHEMAS-PATH)
 
 #### デフォルトのsearch_pathを確認する
 
