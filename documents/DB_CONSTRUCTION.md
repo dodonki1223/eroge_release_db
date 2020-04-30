@@ -537,7 +537,7 @@ GRANT readwrite TO app;
 
 ### ユーザーとロールが作成されたか確認
 
-`app`、`app_readonly` ユーザーが表示され、ロールがそれぞれちゃんと付与されているか以下のSQLを実行して確認してください
+`app`、`app_readonly` ユーザーが表示され、ロールがそれぞれちゃんと付与されているか以下のSQLを実行して確認してください  
 
 ![44_confirmation_user_list](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/44_confirmation_user_list.png)
 
@@ -561,3 +561,66 @@ GRANT readwrite TO app;
                           )
 ORDER BY r.rolname;
 ```
+
+### デフォルトのsearch_pathを変更する
+
+デフォルトの `search_path` 設定だと作成した `eroge_release_db_schema` 名を省略してテーブルの検索をすることができません  
+`search_path` 設定を変更して`eroge_release_db_schema` 名を省略してもテーブルの検索をできるようにします
+
+**eroge_release_db_schema を作成したスキーマ名に置き換えてください**
+
+#### デフォルトのsearch_pathを確認する
+
+以下のSQLを実行します
+
+![45_default_search_path](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/45_default_search_path.png)
+
+```sql
+SHOW search_path;
+```
+
+デフォルトの状態だと `ログインユーザー名` と同じスキーマ名を探しに行き、無かったら `public` スキーマで探すようになっています  
+search_pathに `eroge_release_db_schema` を追加することで省略してテーブルの検索をすることができます
+
+現在のカレントスキーマを確認すると `public` になっています
+
+![46_default_current_schema](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/46_default_current_schema.png)
+
+スキーマ名を省略してgame_castsテーブルを検索してみると下記のようにエラーになります
+
+![47_select_game_casts_table_fail](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/47_select_game_casts_table_fail.png)
+
+#### DB パラメータグループからsearch_pathを変更する
+
+作成した `DB パラメータグループ` を選択し、編集します
+
+![48_edit_db_parameter_group](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/48_edit_db_parameter_group.png)
+
+パラメータに `search_path` を入力し 値の部分に `'$user',eroge_release_db_schema` と入力し `変更のプレビュー` をクリックします
+
+![49_input_db_parameter_group](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/49_input_db_parameter_group.png)
+
+新しい値が `'$user',eroge_release_db_schema` になっていることを確認したら `変更の保存` をクリックします
+
+![50_save_db_parameter_group](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/50_save_db_parameter_group.png)
+
+#### 変更されたsearch_pathを確認する
+
+以下のSQLを実行します
+
+![51_after_change_search_path](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/51_after_change_search_path.png)
+
+```sql
+SHOW search_path;
+```
+
+DB パラメータグループで変更した値になっていることを確認します  
+現在のカレントスキーマも確認すると `eroge_release_db_schema` になっています
+
+![52_after_change_schema](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/52_after_change_schema.png)
+
+スキーマ名を省略してgame_castsテーブルを検索してみるとエラーにならず表示されたことを確認できます
+
+![53_select_game_casts_table_success](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/53_select_game_casts_table_success.png)
+
+**以上でRDSの構築は完了です**
