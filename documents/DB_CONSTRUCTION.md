@@ -384,3 +384,34 @@ AWSのブログ記事を参考に `ユーザーとロールを管理するため
 上記、画像と文章は [PostgreSQL ユーザーとロールの管理 | Amazon Web Services ブログ](https://aws.amazon.com/jp/blogs/news/managing-postgresql-users-and-roles/) より引用
 
 言っていることは `読み込み権限`、`読み込み・書き込み権限` などのグループロールを作成し、それを用途に応じたユーザーに付与する  
+
+### publicスキーマ
+
+新しくデータベースを作成すると `publicスキーマ` が作成されます  
+テーブルなどのデータベースオブジェクトを作成すると `publicスキーマ` に所属することになります  
+
+新しくユーザーを作成して権限を付与して制限を行っても `publicスキーマ` に作成されてしまうので新しく作成したユーザーが意味のないものになってしまいます  
+`publicスキーマ` への作成権限を取り消す必要があります
+
+PostgreSQLの公式のドキュメントに以下のように書かれています
+
+> 標準SQLには、publicスキーマという概念もありません。 標準に最大限従うためには、publicスキーマは使用すべきではありません。
+
+`publicスキーマ` は使わない方向でいくのが良いでしょう  
+詳しくは以下の公式ドキュメントを確認してください
+
+- [5.8.7. 移植性](https://www.postgresql.jp/document/11/html/ddl-schemas.html#DDL-SCHEMAS-PORTABILITY)
+
+#### publicスキーマを使用できないようにする
+
+以下のSQLを実行して `publicスキーマ` を使用できないようにする
+
+```sql
+-- public ロールから public スキーマに対するデフォルトの作成権限を取り消す
+REVOKE CREATE ON SCHEMA public FROM PUBLIC;
+
+-- publicロールがデータベースに接続する機能を無効にする
+-- eroge_release_dbはデータベース名です
+REVOKE ALL ON DATABASE eroge_release_db FROM PUBLIC;
+```
+
