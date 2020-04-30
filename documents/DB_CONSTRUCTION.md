@@ -415,3 +415,36 @@ REVOKE CREATE ON SCHEMA public FROM PUBLIC;
 REVOKE ALL ON DATABASE eroge_release_db FROM PUBLIC;
 ```
 
+### スキーマを作成する
+
+本来ならば作成するユーザーごとにスキーマを作成するのが良さそうですが今回はスキーマを1つだけ作成してすべてのユーザーはそのスキーマをみるようにします
+
+スキーマのオススメの使用パターンは公式のドキュメントを確認してください
+
+- [5.8.6. 使用パターン](https://www.postgresql.jp/document/11/html/ddl-schemas.html#DDL-SCHEMAS-PATTERNS)
+
+以下のSQLを実行してスキーマを作成します
+
+```sql
+-- 現在のデフォルトのスキーマがpublicか確認する
+SELECT current_schema();
+
+-- スキーマの作成
+-- ※eroge_release_db_schemaはスキーマ名です
+CREATE SCHEMA eroge_release_db_schema;
+
+-- デフォルトはpublicになっているため作成したスキーマに変更します
+-- これをやらないといちいちスキーマ名を追加する必要があります
+-- 下記のような感じになりだるい……
+-- SELECT * FROM eroge_release_db_schema.brands;
+-- ※eroge_release_db_schemaはスキーマ名です
+SET search_path TO eroge_release_db_schema;
+
+-- 現在のデフォルトのスキーマがeroge_release_db_schemaに変わったか確認する
+-- ※eroge_release_db_schemaはスキーマ名です
+SELECT current_schema();
+```
+
+`search_path` については公式のドキュメントを確認してください
+
+- [5.8.3. スキーマ検索パス](https://www.postgresql.jp/document/11/html/ddl-schemas.html#DDL-SCHEMAS-PATH)
