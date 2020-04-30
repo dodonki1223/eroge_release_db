@@ -2,14 +2,14 @@ default: &default
   adapter: postgresql
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   encoding: utf8
-  username: <%= ENV['PROD_EROGE_RELEASE_DB_USER'] %>
-  password: <%= ENV['PROD_EROGE_RELEASE_DB_PASSWORD'] %>
+  username: <%= ENV['EROGE_RELEASE_DB_USER'] %>
+  password: <%= ENV['EROGE_RELEASE_DB_PASSWORD'] %>
   host: 127.0.0.1
-  port: <%= ENV['PROD_EROGE_RELEASE_DB_LOCAL_PORT'] %>
-  database: <%= ENV['PROD_EROGE_RELEASE_DB_NAME'] %>
+  port: <%= ENV['EROGE_RELEASE_DB_LOCAL_PORT'] %>
+  database: <%= ENV['EROGE_RELEASE_DB_NAME'] %>
   # テーブルを作成するスキーマ名を設定する
   # 設定しないとデフォルトのpublicに作成されてしまうため
-  schema_search_path: <%= ENV['PROD_EROGE_RELEASE_DB_SCHEMA_SEARCH_PATH'] %>
+  schema_search_path: <%= ENV['EROGE_RELEASE_DB_SCHEMA_SEARCH_PATH'] %>
 
 production:
   <<: *default
