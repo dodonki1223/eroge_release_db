@@ -387,6 +387,8 @@ AWSのブログ記事を参考に `ユーザーとロールを管理するため
 
 ### publicスキーマ
 
+**注意：これからの作業は `踏み台サーバー `から `マスターユーザー` で RDS に接続して実行します**
+
 新しくデータベースを作成すると `publicスキーマ` が作成されます  
 テーブルなどのデータベースオブジェクトを作成すると `publicスキーマ` に所属することになります  
 
@@ -405,6 +407,8 @@ PostgreSQLの公式のドキュメントに以下のように書かれていま�
 #### publicスキーマを使用できないようにする
 
 以下のSQLを実行して `publicスキーマ` を使用できないようにする
+
+![39_revoke_public_schema](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/39_revoke_public_schema.png)
 
 ```sql
 -- public ロールから public スキーマに対するデフォルトの作成権限を取り消す
@@ -425,6 +429,8 @@ REVOKE ALL ON DATABASE eroge_release_db FROM PUBLIC;
 
 以下のSQLを実行してスキーマを作成します
 
+![40_create_schema](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/40_create_schema.png)
+
 ```sql
 -- スキーマの作成
 -- ※eroge_release_db_schemaはスキーマ名です
@@ -439,6 +445,8 @@ CREATE SCHEMA eroge_release_db_schema;
 また今後作成されるテーブルやビューに `readonly` ロールがアクセスできるように権限を自動付与する
 
 以下のSQLを実行します
+
+![41_create_readonly_role](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/41_create_readonly_role.png)
 
 ```sql
 -- readonlyという名前のロールを作成(パスワードも権限もないロール)
@@ -469,6 +477,8 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA eroge_release_db_schema GRANT SELECT ON TABLE
 また今後作成されるテーブルやビューに `readwrite` ロールがアクセスできるように権限を自動付与する
 
 以下のSQLを実行します
+
+![42_create_readwrite_role](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/42_create_readwrite_role.png)
 
 ```sql
 -- readwriteという名前のロールを作成(パスワードも権限もないロール)
@@ -509,6 +519,10 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA eroge_release_db_schema GRANT USAGE ON SEQUEN
 - app_readonly (読み取り)
 - app (読み取り/書き込み)
 
+以下のSQLを実行してください
+
+![43_create_users](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/43_create_users.png)
+
 ```sql
 -- readonlyユーザーの作成し 読み取り権限ロール を付与する
 -- ※app_readonlyはユーザー名です、passwordはログインする時のパスワードです
@@ -523,7 +537,9 @@ GRANT readwrite TO app;
 
 ### ユーザーとロールが作成されたか確認
 
-`app`、`app_readonly` ユーザーが表示され、ロールがそれぞれちゃんと付与されているか確認してください
+`app`、`app_readonly` ユーザーが表示され、ロールがそれぞれちゃんと付与されているか以下のSQLを実行して確認してください
+
+![44_confirmation_user_list](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/44_confirmation_user_list.png)
 
 ```sql
 -- 権限の確認SQL
