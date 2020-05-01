@@ -24,9 +24,6 @@ x-backend-volumes: &backend-volumes
     - .dockerdev/.bashrc:/root/.bashrc:ro
     - .:/app:cached
     - bundle:/bundle
-    - rails_cache:/app/tmp/cache
-    - node_modules:/app/node_modules
-    - packs:/app/public/packs
 
 # Rubyのサービスで共有する振る舞いを提供する
 x-backend: &backend
@@ -35,9 +32,7 @@ x-backend: &backend
   tty: true 
   environment:
     <<: *env
-    REDIS_URL: redis://redis:6379/
     BOOTSNAP_CACHE_DIR: /bundle/bootsnap
-    WEBPACKER_DEV_SERVER_HOST: webpacker
     HISTFILE: /app/log/.bash_history
     PSQL_HISTFILE: /app/log/.psql_history
     EDITOR: vi
@@ -45,47 +40,21 @@ x-backend: &backend
     WEB_CONCURRENCY: ${WEB_CONCURRENCY:-1}
   depends_on:
     - postgres
-    - redis
 
 services:
-  rails:
+  runner:
     <<: *backend
     <<: *backend-volumes
     command: >
       bash -c "bundle install &&
-      yarn install --check-files &&
       bin/rake db:create &&
-      rm -f tmp/pids/server.pid &&
-      bundle exec rails server -b 0.0.0.0"
-    ports:
-      - '3000:3000'
-
-  runner:
-    <<: *backend
-    <<: *backend-volumes
-    command: /bin/bash
+      bin/rake db:migrate &&
+      bash"
     ports:
       - '3002:3002'
 
-  redis:
-    image: redis:5.0-alpine
-    volumes:
-      - redis:/data
-    ports:
-      - 6379
-
-  webpacker:
-    <<: *app
-    <<: *backend-volumes
-    command: ./bin/webpack-dev-server
-    ports:
-      - '3035:3035'
-    environment:
-      <<: *env
-      WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
-
   postgres:
-    image: postgres:12.1
+    image: postgres:11.5
     volumes:
       - .dockerdev/init_postgres/:/docker-entrypoint-initdb.d/
       - .dockerdev/.psqlrc:/root/.psqlrc:ro
@@ -99,7 +68,3 @@ services:
 volumes:
   postgres:
   bundle:
-  node_modules:
-  rails_cache:
-  packs:
-  redis:
