@@ -54,7 +54,7 @@ services:
       - '3002:3002'
 
   postgres:
-    image: postgres:12.1
+    image: postgres:11.5
     volumes:
       - .dockerdev/init_postgres/:/docker-entrypoint-initdb.d/
       - .dockerdev/.psqlrc:/root/.psqlrc:ro
