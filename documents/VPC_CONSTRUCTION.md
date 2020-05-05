@@ -146,7 +146,7 @@ IGW（インターネットゲートウェイ）が作成されていること�
 
 ![20_create_private_subent_open_1a](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/vpc_construction/20_create_private_subent_open_1a.png)
 
-#### サブネット作成画面
+#### サブネット作成
 
 `名前タグ`、`VPC`、`アベイラビリティーゾーン`、`IPv4 CIDR ブロック` を入力して `作成` をクリックします 
 
@@ -173,7 +173,7 @@ IGW（インターネットゲートウェイ）が作成されていること�
 
 ![23_create_private_subent_created_1a](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/vpc_construction/23_create_private_subent_created_1a.png)
 
-#### サブネット作成画面
+#### サブネット作成
 
 `名前タグ`、`VPC`、`アベイラビリティーゾーン`、`IPv4 CIDR ブロック` を入力して `作成` をクリックします 
 
@@ -190,3 +190,85 @@ IGW（インターネットゲートウェイ）が作成されていること�
 作成されたことを確認します
 
 ![26_create_private_subent_created_1c](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/vpc_construction/26_create_private_subent_created_1c.png)
+
+### プライベートサブネット用のルートテーブルを作成する
+
+プライベート用のサブネットを作成していきます
+
+#### パブリックサブネット用のルートテーブルに名前を付ける
+
+プライベート用のサブネットを作成する前にわかりやすいように名前をつけます
+
+![27_create_private_route_table_public_route_table_name](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/vpc_construction/27_create_private_route_table_public_route_table_name.png)
+
+#### ルートテーブルの作成画面を開く
+
+`ルートテーブルの作成` をクリックします
+
+![28_create_private_route_table_open_create_route_table](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/vpc_construction/28_create_private_route_table_open_create_route_table.png)
+
+#### ルートテーブルの作成
+
+`名前タグ`、`VPC` を入力して `作成` をクリックします
+
+**`VPC` には作成したVPCを選択してください**  
+
+![29_create_private_route_table_create_route_table_editing](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/vpc_construction/29_create_private_route_table_create_route_table_editing.png)
+
+`閉じる` をクリックします
+
+![30_create_private_route_table_created_close](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/vpc_construction/30_create_private_route_table_created_close.png)
+
+作成されたことを確認します
+
+![31_create_private_route_table_created](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/vpc_construction/31_create_private_route_table_created.png)
+
+### ap-northeast-1a に作成したサブネットにルートテーブルに関連付ける
+
+プライベート用に作成したルートテーブルをサブネットに紐付けていきます  
+
+#### ルートテーブルの関連付けの編集画面を開く
+
+`ルートテーブルの関連付けの編集` をクリックします
+
+![32_create_private_route_table_open_edit_route_table_1a](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/vpc_construction/32_create_private_route_table_open_edit_route_table_1a.png)
+
+#### ルートテーブルの関連付けの編集
+
+先程作成したルートテーブルを選択し `保存` をクリックします
+
+![33_create_private_route_table_edit_route_table_editing_1a](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/vpc_construction/33_create_private_route_table_edit_route_table_editing_1a.png)
+
+`閉じる` をクリックします
+
+![34_create_private_route_table_edit_route_table_close_1a](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/vpc_construction/34_create_private_route_table_edit_route_table_close_1a.png)
+
+### ap-northeast-1c に作成したサブネットにルートテーブルに関連付ける
+
+プライベート用に作成したルートテーブルをサブネットに紐付けていきます  
+
+#### ルートテーブルの関連付けの編集画面を開く
+
+`ルートテーブルの関連付けの編集` をクリックします
+
+![35_create_private_route_table_open_edit_route_table_1c](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/vpc_construction/35_create_private_route_table_open_edit_route_table_1c.png)
+
+#### ルートテーブルの関連付けの編集
+
+先程作成したルートテーブルを選択し `保存` をクリックします
+
+![36_create_private_route_table_edit_route_table_editing_1c](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/vpc_construction/36_create_private_route_table_edit_route_table_editing_1c.png)
+
+`閉じる` をクリックします
+
+![37_create_private_route_table_edit_route_table_close_1c](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/vpc_construction/37_create_private_route_table_edit_route_table_close_1c.png)
+
+### プライベート用のルートテーブルに紐付いたか確認する
+
+ルートテーブルにサブネットが紐付いているのを確認できます
+
+![38_create_private_route_table_editing](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/vpc_construction/38_create_private_route_table_editing.png)
+
+**以上でVPCの構築は完了です**
+
+![00_eroge_release_vpc](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/vpc_construction/00_eroge_release_vpc.png)
