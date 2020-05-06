@@ -202,3 +202,21 @@ Elastic IP アドレスの割り当てが完了しました
 EC2インスタンス画面でも `Elastic IP` に先程作成した `Elastic IP アドレス` が表示されていることが確認できます
 
 ![22_attached_eip_on_ec2_dashboard](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/stepping_stone_server_construction/22_attached_eip_on_ec2_dashboard.png)
+
+## 実際に接続してみる
+
+以下のようなコマンドを使用し作成した踏み台サーバーにアクセスできるか確認してください
+
+**キーペアはEC2インスタンスを作成した時、ダウンロードしたものになります**
+
+```shell
+$ ssh -i キーペア ec2–user@ElasticIPアドレス
+```
+
+接続することができたら完了です
+
+![23_connect_to_ec2](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/stepping_stone_server_construction/23_connect_to_ec2.png)
+
+**以上で踏み台サーバーの構築は完了です**
+
+![01_stepping_stone_server](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/stepping_stone_server_construction/01_stepping_stone_server.png)
