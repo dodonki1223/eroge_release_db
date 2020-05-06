@@ -126,3 +126,53 @@ sudo sed -i 's|^ZONE=[a-zA-Z0-9\.\-\"]*$|ZONE="Asia/Tokyo”|g' /etc/sysconfig/c
 Elastic IPがまだ設定されていないので今後はElastic IPを設定していきます
 
 ![12_create_ec2_created](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/stepping_stone_server_construction/12_create_ec2_created.png)
+
+## Elastic IPを作成する
+
+現状だと踏み台サーバーを起動するたびにIPアドレスが変わってしまうので `Elastic IP` を作成しIPアドレスが固定されるようにします
+
+### Elastic IP アドレスの割り当て画面の表示
+
+`Elastic IP アドレスの割り当て` をクリックします
+
+![13_create_eip_open_setting](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/stepping_stone_server_construction/13_create_eip_open_setting.png)
+
+### Elastic IP アドレスの割り当て
+
+特に設定する部分は無いので `割り当て` をクリックします
+
+![14_create_eip_setting](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/stepping_stone_server_construction/14_create_eip_setting.png)
+ 
+### Elastic IP アドレスの割り当て完了
+
+Elastic IP アドレスの割り当てが完了しました
+
+![15_create_eip_created](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/stepping_stone_server_construction/15_create_eip_created.png)
+
+### Elastic IP アドレスに名前を付ける
+
+名前が無くて分かりづらいのでタグを追加して名前が表示されるようにします
+
+#### Elastic IP アドレスの詳細画面を開く
+
+`Actions` をクリックし `詳細を表示` をクリックします
+
+![16_create_eip_open_detail](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/stepping_stone_server_construction/16_create_eip_open_detail.png)
+
+#### Elastic IP アドレスの詳細
+
+`タグの管理` をクリックします
+
+![17_create_eip_tag](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/stepping_stone_server_construction/17_create_eip_tag.png)
+
+#### タグの管理
+
+`キー` に `Name` と `値 - オプション` にはわかりやすい名前を入力してください  
+最後に `保存する` をクリックします
+
+![18_create_eip_tag_editing](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/stepping_stone_server_construction/18_create_eip_tag_editing.png)
+
+タグが追加されました
+
+![19_create_eip_tag_edited](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/stepping_stone_server_construction/19_create_eip_tag_edited.png)
+
