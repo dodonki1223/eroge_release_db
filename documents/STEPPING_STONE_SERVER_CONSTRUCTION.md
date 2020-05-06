@@ -176,3 +176,29 @@ Elastic IP アドレスの割り当てが完了しました
 
 ![19_create_eip_tag_edited](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/stepping_stone_server_construction/19_create_eip_tag_edited.png)
 
+## Elastic IP アドレスをEC2 インスタンスに関連付ける
+
+作成した `Elastic IP アドレス` を先程作成した `踏み台サーバー（EC2）` に関連付けします
+
+### Elastic IP アドレスの関連付け画面を開く
+
+`Elastic IP アドレスの関連付け` をクリックします
+
+![19_create_eip_tag_edited](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/stepping_stone_server_construction/19_create_eip_tag_edited.png)
+
+### Elastic IP アドレスの関連付け
+
+インスタンスの項目は先程作成した `EC2インスタンス` を選択してください  
+最後に `関連付ける` をクリックします
+
+![20_attach_eip_to_ec2](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/stepping_stone_server_construction/20_attach_eip_to_ec2.png)
+
+### Elastic IP アドレスが関連付けられたか確認する
+
+関連付けられたインスタンスに先程設定したEC2インスタンスが表示されていることが確認できます
+
+![21_attached_eip_to_ec2](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/stepping_stone_server_construction/21_attached_eip_to_ec2.png)
+
+EC2インスタンス画面でも `Elastic IP` に先程作成した `Elastic IP アドレス` が表示されていることが確認できます
+
+![22_attached_eip_on_ec2_dashboard](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/stepping_stone_server_construction/22_attached_eip_on_ec2_dashboard.png)
