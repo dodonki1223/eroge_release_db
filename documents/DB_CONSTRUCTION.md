@@ -303,6 +303,33 @@ Performance Insightsに関してはデフォルトのままで良いでしょう
 
 - [料金 - Amazon RDS for PostgreSQL | AWS](https://aws.amazon.com/jp/rds/postgresql/pricing/?pg=pr&loc=3)
 
+## 踏み台サーバーからRDSに接続する
+
+### 踏み台サーバーに接続する
+
+以下のようなコマンドを使用し踏み台サーバーにアクセスします
+
+**キーペアはEC2インスタンスを作成した時、ダウンロードしたものになります**
+
+```shell
+$ ssh -i キーペア ec2–user@ElasticIPアドレス
+```
+
+![36_connect_to_ec2](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/36_connect_to_ec2.png)
+
+### RDSに接続する
+
+以下のようなコマンドを使用しRDSにアクセスします
+
+```shell
+$ psql -h RDSのエンドポイント -U マスターユーザー名 データベース名
+```
+
+![37_connect_ec2_to_rds](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/37_connect_ec2_to_rds.png)
+
+アクセスできたら問題ないです  
+以降の作業はこちらの画面から行っていきます
+
 ## PostgreSQLについて
 
 PostgreSQLで環境構築をするにあたって必要な用語を最低限おさらいします
@@ -311,7 +338,7 @@ PostgreSQLで環境構築をするにあたって必要な用語を最低限お�
 
 データベースクラスタはデータベースの集合になります  
 
-![36_postgresql_database_cluster](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/36_postgresql_database_cluster.png)
+![38_postgresql_database_cluster](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/38_postgresql_database_cluster.png)
 
 RDSで作成した場合はデータベースクラスタに `RDSの設定画面で設定した最初のデータベース`、`postgres`、`rdsadin`、`tempalte0`、`template1` が作成された状態になっています
 
@@ -325,7 +352,7 @@ RDSで作成した場合はデータベースクラスタに `RDSの設定画面
 
 データベースはデータベースオブジェクト（テーブル、ビュー、関数および演算子など）の集合に名前をつけたものです
 
-![37_postgresql_database](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/37_postgresql_database.png)
+![39_postgresql_database](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/39_postgresql_database.png)
 
 詳しくは以下のドキュメントを確認してください
 
@@ -336,7 +363,7 @@ RDSで作成した場合はデータベースクラスタに `RDSの設定画面
 
 スキーマはデータベース内のデータベースオブジェクト（テーブル、ビュー、関数および演算子など）をグループ化することができます  
 
-![38_postgresql_schema](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/38_postgresql_schema.png)
+![40_postgresql_schema](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/40_postgresql_schema.png)
 
 詳しくは以下のドキュメントを確認してください
 
@@ -408,7 +435,7 @@ PostgreSQLの公式のドキュメントに以下のように書かれていま�
 
 以下のSQLを実行して `publicスキーマ` を使用できないようにする
 
-![39_revoke_public_schema](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/39_revoke_public_schema.png)
+![41_revoke_public_schema](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/41_revoke_public_schema.png)
 
 ```sql
 -- public ロールから public スキーマに対するデフォルトの作成権限を取り消す
@@ -429,7 +456,7 @@ REVOKE ALL ON DATABASE eroge_release_db FROM PUBLIC;
 
 以下のSQLを実行してスキーマを作成します
 
-![40_create_schema](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/40_create_schema.png)
+![42_create_schema](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/42_create_schema.png)
 
 ```sql
 -- スキーマの作成
@@ -446,7 +473,7 @@ CREATE SCHEMA eroge_release_db_schema;
 
 以下のSQLを実行します
 
-![41_create_readonly_role](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/41_create_readonly_role.png)
+![43_create_readonly_role](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/43_create_readonly_role.png)
 
 ```sql
 -- readonlyという名前のロールを作成(パスワードも権限もないロール)
@@ -478,7 +505,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA eroge_release_db_schema GRANT SELECT ON TABLE
 
 以下のSQLを実行します
 
-![42_create_readwrite_role](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/42_create_readwrite_role.png)
+![44_create_readwrite_role](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/44_create_readwrite_role.png)
 
 ```sql
 -- readwriteという名前のロールを作成(パスワードも権限もないロール)
@@ -521,7 +548,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA eroge_release_db_schema GRANT USAGE ON SEQUEN
 
 以下のSQLを実行してください
 
-![43_create_users](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/43_create_users.png)
+![45_create_users](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/45_create_users.png)
 
 ```sql
 -- readonlyユーザーの作成し 読み取り権限ロール を付与する
@@ -539,7 +566,7 @@ GRANT readwrite TO app;
 
 `app`、`app_readonly` ユーザーが表示され、ロールがそれぞれちゃんと付与されているか以下のSQLを実行して確認してください  
 
-![44_confirmation_user_list](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/44_confirmation_user_list.png)
+![46_confirmation_user_list](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/46_confirmation_user_list.png)
 
 ```sql
 -- 権限の確認SQL
@@ -576,7 +603,7 @@ search_pathについて詳しくは以下のドキュメントを確認してく
 
 以下のSQLを実行します
 
-![45_default_search_path](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/45_default_search_path.png)
+![47_default_search_path](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/47_default_search_path.png)
 
 ```sql
 SHOW search_path;
@@ -587,31 +614,31 @@ search_pathに `eroge_release_db_schema` を追加することで省略してテ
 
 現在のカレントスキーマを確認すると `public` になっています
 
-![46_default_current_schema](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/46_default_current_schema.png)
+![48_default_current_schema](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/48_default_current_schema.png)
 
 スキーマ名を省略してgame_castsテーブルを検索してみると下記のようにエラーになります
 
-![47_select_game_casts_table_fail](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/47_select_game_casts_table_fail.png)
+![49_select_game_casts_table_fail](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/49_select_game_casts_table_fail.png)
 
 #### DB パラメータグループからsearch_pathを変更する
 
 作成した `DB パラメータグループ` を選択し、編集します
 
-![48_edit_db_parameter_group](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/48_edit_db_parameter_group.png)
+![50_edit_db_parameter_group](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/50_edit_db_parameter_group.png)
 
 パラメータに `search_path` を入力し 値の部分に `'$user',eroge_release_db_schema` と入力し `変更のプレビュー` をクリックします
 
-![49_input_db_parameter_group](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/49_input_db_parameter_group.png)
+![51_input_db_parameter_group](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/51_input_db_parameter_group.png)
 
 新しい値が `'$user',eroge_release_db_schema` になっていることを確認したら `変更の保存` をクリックします
 
-![50_save_db_parameter_group](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/50_save_db_parameter_group.png)
+![52_save_db_parameter_group](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/52_save_db_parameter_group.png)
 
 #### 変更されたsearch_pathを確認する
 
 以下のSQLを実行します
 
-![51_after_change_search_path](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/51_after_change_search_path.png)
+![53_after_change_search_path](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/53_after_change_search_path.png)
 
 ```sql
 SHOW search_path;
@@ -620,10 +647,10 @@ SHOW search_path;
 DB パラメータグループで変更した値になっていることを確認します  
 現在のカレントスキーマも確認すると `eroge_release_db_schema` になっています
 
-![52_after_change_schema](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/52_after_change_schema.png)
+![54_after_change_schema](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/54_after_change_schema.png)
 
 スキーマ名を省略してgame_castsテーブルを検索してみるとエラーにならず表示されたことを確認できます
 
-![53_select_game_casts_table_success](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/53_select_game_casts_table_success.png)
+![55_select_game_casts_table_success](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/55_select_game_casts_table_success.png)
 
 **以上でRDSの構築は完了です**
