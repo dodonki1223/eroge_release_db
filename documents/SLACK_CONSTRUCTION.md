@@ -4,6 +4,18 @@
 更新の実行有無、実行結果通知をSlackで行うためSlackの設定が必要です  
 CircleCIからの通知を受けるための設定を行います
 
+## Slackからの通知例
+
+**マイグレーション成功時**
+
+![00_notify_deploy_success](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/slack_construction/00_notify_deploy_success.png)
+
+**マイグレーション失敗時**
+
+![01_notify_deploy_failure](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/slack_construction/01_notify_deploy_failure.png)
+
+では早速、必要な設定を行っていきます
+
 ## Incoming Webhookをインストール
 
 [https://ワークスペース名.slack.com/apps](https://ワークスペース名.slack.com/apps) にアクセスし `webhook` と入力します  
