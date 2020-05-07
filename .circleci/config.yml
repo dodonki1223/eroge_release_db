@@ -162,7 +162,7 @@ commands:
           #   The authenticity of host 'hoge (fuga)' can't be established.
           #   RSA key fingerprint is hoge
           #   Are you sure you want to continue connecting (yes/no)? 
-          command: ssh -o StrictHostKeyChecking=no -f -N -L ${EROGE_RELEASE_DB_LOCAL_PORT}:${EROGE_RELEASE_DB_HOST}:${EROGE_RELEASE_DB_PORT} ${BASTION_USER}@${BASTION_HOST}
+          command: ssh -o StrictHostKeyChecking=no -f -N -L ${EROGE_RELEASE_DB_LOCAL_PORT}:${EROGE_RELEASE_DB_HOST}:${EROGE_RELEASE_DB_PORT} ${STEPPING_STONE_SERVER_USER}@${STEPPING_STONE_SERVER_HOST}
   deploy-notification:
     steps:
       - slack/status:
