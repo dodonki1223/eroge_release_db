@@ -616,7 +616,7 @@ search_pathに `eroge_release_db_schema` を追加することで省略してテ
 
 ![48_default_current_schema](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/48_default_current_schema.png)
 
-スキーマ名を省略してgame_castsテーブルを検索してみると下記のようにエラーになります
+スキーマ名を省略してテーブルを検索してみると下記のようにエラーになります
 
 ![49_select_game_casts_table_fail](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/49_select_game_casts_table_fail.png)
 
@@ -649,7 +649,7 @@ DB パラメータグループで変更した値になっていることを確�
 
 ![54_after_change_schema](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/54_after_change_schema.png)
 
-スキーマ名を省略してgame_castsテーブルを検索してみるとエラーにならず表示されたことを確認できます
+スキーマ名を省略してテーブルを検索してみるとエラーにならず表示されたことを確認できます
 
 ![55_select_game_casts_table_success](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/55_select_game_casts_table_success.png)
 

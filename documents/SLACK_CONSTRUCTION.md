@@ -54,4 +54,4 @@ CircleCIからの通知を受けるための設定を行います
 - GitHubのアイコンは[こちらから](https://github.com/logos)ダウンロードできます
 - CircleCIのアイコンは[メール通知](https://circleci.com/docs/ja/2.0/notifications/#%E3%83%A1%E3%83%BC%E3%83%AB%E9%80%9A%E7%9F%A5%E3%81%AE%E8%A8%AD%E5%AE%9A%E3%81%A8%E5%A4%89%E6%9B%B4)のものを使用すると良いと思います
 
-**以上でSlackの構築は完了です**
+**以上でSlackの環境構築は完了です**
