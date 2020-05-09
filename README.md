@@ -64,35 +64,37 @@ GitHubのmasterブランチが更新された時、CircleCIで静的コード解
 
 AWSではVPC、踏み台サーバー、RDSの構築を行います
 
-#### [VPC構築手順書](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/VPC_CONSTRUCTION.md)
+- #### [VPC構築手順書](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/VPC_CONSTRUCTION.md)
 
-![00_eroge_release_vpc](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/vpc_construction/00_eroge_release_vpc.png)
+![01_eroge_release_vpc](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/01_eroge_release_vpc.png)
 
-#### [踏み台サーバー構築手順書](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/STEPPING_STONE_SERVER_CONSTRUCTION.md)
+- #### [踏み台サーバー構築手順書](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/STEPPING_STONE_SERVER_CONSTRUCTION.md)
 
-![01_stepping_stone_server](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/stepping_stone_server_construction/01_stepping_stone_server.png)
+![02_stepping_stone_server](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/02_stepping_stone_server.png)
 
-#### [RDS(Master/Slave構成)構築手順書](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/DB_CONSTRUCTION.md)
+- #### [RDS(Master/Slave構成)構築手順書](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/DB_CONSTRUCTION.md)
 
-![01_eroge_release_db_rds](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/01_eroge_release_db_rds.png)
+![03_eroge_release_db_rds](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/03_eroge_release_db_rds.png)
 
 ### CircleCIの環境構築
 
 CircleCIでは静的コード解析、テストを行い、成功した場合にRDSへポートフォワーディングで接続してマイグレーションを実行します  
 またマイグレーションを実行するかどうか・マイグレーションの実行結果をSlackに通知する仕組みもあります
 
-#### [CircleCIの環境構築](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/CIRCLE_CI_CONSTRUCTION.md)
+- #### [CircleCIの環境構築](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/CIRCLE_CI_CONSTRUCTION.md)
+
+![04_circleci_projects](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/04_circleci_projects.png)
 
 ### Slackの環境構築
 
 Slackではマイグレーションを実行するかどうかの承認通知、マイグレーション完了通知を行います
 
-#### [Slackの環境構築](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/SLACK_CONSTRUCTION.md)
+- #### [Slackの環境構築](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/SLACK_CONSTRUCTION.md)
 
 **マイグレーション成功時**
 
-![00_notify_deploy_success](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/slack_construction/00_notify_deploy_success.png)
+![05_notify_deploy_success](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/05_notify_deploy_success.png)
 
 **マイグレーション失敗時**
 
-![01_notify_deploy_failure](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/slack_construction/01_notify_deploy_failure.png)
+![06_notify_deploy_failure](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/06_notify_deploy_failure.png)
