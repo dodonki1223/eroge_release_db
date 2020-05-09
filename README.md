@@ -1,61 +1,16 @@
-# README
+# eroge_release_db [![CircleCI](https://circleci.com/gh/dodonki1223/eroge_release_db/tree/master.svg?style=svg)](https://circleci.com/gh/dodonki1223/eroge_release_db/tree/master)
 
-[![CircleCI](https://circleci.com/gh/dodonki1223/eroge_release_db/tree/master.svg?style=svg)](https://circleci.com/gh/dodonki1223/eroge_release_db/tree/master)
+美少女ゲームのブランド、ゲーム情報、出演声優、声優情報などを管理するためのデータベースです
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+![00_eroge_release_db](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/00_eroge_release_db.png)
 
-Things you may want to cover:
+## 概要
 
-* Ruby version
+Master、Slave構成のRDS（PostgreSQL）内のデータベースのバージョン管理をRailsの `Active Record マイグレーション` を使用して管理します  
+データベースの `設計` や `バージョン管理` を行うためのリポジトリでデータの挿入などは行いません（別のプロジェクトで行います）
 
-* System dependencies
+## データベースER図
 
-* Configuration
+![eroge_release_db](https://raw.githubusercontent.com/dodonki1223/eroge_release_db/master/db/erd/eroge_release_db.png)
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-## 実際にやったこと
-
-### Gemfileにpgを追加
-
-```ruby
-# Use PostgresSQL as the database for Active Record
-gem 'pg', '~> 1.2.2'
-```
-
-### database.ymlを変更
-
-```yml
-default: &default
-  adapter: postgresql
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  encoding: utf8
-  username: root
-  password:
-  host: postgres
-  port: 5432
-
-development:
-  <<: *default
-  database: dev_eroge_release
-
-test:
-  <<: *default
-  database: test_eroge_release
-
-production:
-  <<: *default
-  database: prod_eroge_release
-```
- 
+[Rails ERD](https://github.com/voormedia/rails-erd) を使用してデータベースのER図を出力しています
