@@ -54,3 +54,38 @@ PCにDockerがインストールされていれば問題ないです
 GitHubのmasterブランチが更新された時、CircleCIで静的コード解析、テストが通ったらポートフォワーディングを使用してRDSに接続しRailsのマイグレーションを実行することでPostgreSQLのデータベースを更新します  
 
 **masterブランチ以外の更新時はマイグレーションは実行されません**
+
+## 環境構築
+
+環境構築のために `AWS`、`CircleCI`、`Slack` の環境構築が必要です  
+すごく長いので別リンクにて確認してください
+
+### AWSの環境構築
+
+AWSではVPC、踏み台サーバー、RDSの構築を行います
+
+#### [VPC構築手順書](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/VPC_CONSTRUCTION.md)
+
+![00_eroge_release_vpc](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/vpc_construction/00_eroge_release_vpc.png)
+
+#### [踏み台サーバー構築手順書](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/STEPPING_STONE_SERVER_CONSTRUCTION.md)
+
+![01_stepping_stone_server](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/stepping_stone_server_construction/01_stepping_stone_server.png)
+
+#### [RDS(Master/Slave構成)構築手順書](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/DB_CONSTRUCTION.md)
+
+![01_eroge_release_db_rds](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/01_eroge_release_db_rds.png)
+
+### Slackの環境構築
+
+Slackではマイグレーションを実行するかどうかの承認通知、マイグレーション完了通知を行います
+
+#### [Slackの環境構築](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/SLACK_CONSTRUCTION.md)
+
+**マイグレーション成功時**
+
+![00_notify_deploy_success](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/slack_construction/00_notify_deploy_success.png)
+
+**マイグレーション失敗時**
+
+![01_notify_deploy_failure](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/slack_construction/01_notify_deploy_failure.png)
