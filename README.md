@@ -76,6 +76,13 @@ AWSではVPC、踏み台サーバー、RDSの構築を行います
 
 ![01_eroge_release_db_rds](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/db_construction/01_eroge_release_db_rds.png)
 
+### CircleCIの環境構築
+
+CircleCIでは静的コード解析、テストを行い、成功した場合にRDSへポートフォワーディングで接続してマイグレーションを実行します  
+またマイグレーションを実行するかどうか・マイグレーションの実行結果をSlackに通知する仕組みもあります
+
+#### [CircleCIの環境構築](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/CIRCLE_CI_CONSTRUCTION.md)
+
 ### Slackの環境構築
 
 Slackではマイグレーションを実行するかどうかの承認通知、マイグレーション完了通知を行います
