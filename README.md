@@ -62,7 +62,10 @@ GitHubのmasterブランチが更新された時、CircleCIで静的コード解
 
 ### AWSの環境構築
 
-AWSではVPC、踏み台サーバー、RDSの構築を行います
+AWSではVPC、踏み台サーバー、RDSの構築を行います  
+
+AWSの環境構築にはUdemy の `手を動かしながら2週間で学ぶ AWS 基本から応用まで` の教材をすごく参考にさせて頂きました  
+現在は受講出来ないようなので作者のブログ記事の [AWS学習の0→1をサポートする講座「手を動かしながら2週間で学ぶ AWS 基本から応用まで」をUdemyでリリースしました - log4ketancho](https://www.ketancho.net/entry/2018/09/03/074115) を確認してください
 
 - #### [VPC構築手順書](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/VPC_CONSTRUCTION.md)
 
@@ -98,3 +101,41 @@ Slackではマイグレーションを実行するかどうかの承認通知、
 **マイグレーション失敗時**
 
 ![06_notify_deploy_failure](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/06_notify_deploy_failure.png)
+
+## 開発
+
+ローカルで開発を行う方法を説明します  
+
+### 開発ができる状態にする
+
+下記のコマンドを実行すれば開発を行うことができます
+
+```shell
+$ docker-compose run runner
+```
+
+実行後、下記のような状態になれば大丈夫です
+
+![07_local_development_start](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/07_local_development_start.png)
+
+︙
+︙
+︙
+
+![08_local_development_end](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/08_local_development_end.png)
+
+### 開発方法
+
+[Railsガイド](https://railsguides.jp/) などの以下のドキュメントを参考にマイグレーションファイルを作成していき開発を行っていきます
+
+- [2 マイグレーションを作成する](https://railsguides.jp/active_record_migrations.html#%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B)
+
+### 開発環境を削除する
+
+コンテナ、イメージ、ボリューム、ネットワークをすべて一括で削除します
+
+```shell
+$ docker-compose down --rmi all --volumes
+```
+
+参考記事：[《滅びの呪文》Docker Composeで作ったコンテナ、イメージ、ボリューム、ネットワークを一括完全消去する便利コマンド - Qiita](https://qiita.com/suin/items/19d65e191b96a0079417)
