@@ -94,13 +94,9 @@ Slackではマイグレーションを実行するかどうかの承認通知、
 
 - #### [Slackの環境構築](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/SLACK_CONSTRUCTION.md)
 
-**マイグレーション成功時**
-
-![05_notify_deploy_success](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/05_notify_deploy_success.png)
-
-**マイグレーション失敗時**
-
-![06_notify_deploy_failure](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/06_notify_deploy_failure.png)
+| マイグレーション成功時                                                                                                                              | マイグレーション失敗時                                                                                                                              |
+|:----------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------:|
+| ![05_notify_deploy_success](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/05_notify_deploy_success.png) | ![06_notify_deploy_failure](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/06_notify_deploy_failure.png) |
 
 ## 開発
 
@@ -118,9 +114,9 @@ $ docker-compose run runner
 
 ![07_local_development_start](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/07_local_development_start.png)
 
-︙
-︙
-︙
+︙  
+︙  
+︙  
 
 ![08_local_development_end](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/08_local_development_end.png)
 
