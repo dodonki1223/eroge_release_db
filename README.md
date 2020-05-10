@@ -1,61 +1,141 @@
-# README
+# eroge_release_db [![CircleCI](https://circleci.com/gh/dodonki1223/eroge_release_db/tree/master.svg?style=svg)](https://circleci.com/gh/dodonki1223/eroge_release_db/tree/master)
 
-[![CircleCI](https://circleci.com/gh/dodonki1223/eroge_release_db/tree/master.svg?style=svg)](https://circleci.com/gh/dodonki1223/eroge_release_db/tree/master)
+美少女ゲームのブランド、ゲーム情報、出演声優、声優情報などを管理するためのデータベースです
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+![00_eroge_release_db](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/00_eroge_release_db.png)
 
-Things you may want to cover:
+## 概要
 
-* Ruby version
+Master、Slave構成のRDS（PostgreSQL）内のデータベースのバージョン管理をRailsの `Active Record マイグレーション` を使用して管理します  
+データベースの `設計` や `バージョン管理` を行うためのリポジトリでデータの挿入などは行いません（別のプロジェクトで行います）
 
-* System dependencies
+## データベースER図
 
-* Configuration
+![eroge_release_db](https://raw.githubusercontent.com/dodonki1223/eroge_release_db/master/db/erd/eroge_release_db.png)
 
-* Database creation
+[Rails ERD](https://github.com/voormedia/rails-erd) を使用してデータベースのER図を出力しています
 
-* Database initialization
+## 環境について
 
-* How to run the test suite
+使用しているローカル・本番環境について説明します
 
-* Services (job queues, cache servers, search engines, etc.)
+### ローカル環境
 
-* Deployment instructions
+ローカルの環境について説明します
 
-* ...
+#### バージョン情報
 
-## 実際にやったこと
+| ソフトウェアスタック | バージョン    |
+|:---------------------|:-------------:|
+| Rails                | 6.0.2.1以上   |
+| Ruby                 | 2.6.5         |
+| PostgreSQL           | 11            |
+| Bundler              | 2.1.2         |
 
-### Gemfileにpgを追加
+#### 開発方法
 
-```ruby
-# Use PostgresSQL as the database for Active Record
-gem 'pg', '~> 1.2.2'
+Dockerを使用して開発を行います  
+PCにDockerがインストールされていれば問題ないです
+
+### 本番環境
+
+本番の環境について説明します  
+本番環境はAWSにて構築したRDSになります  
+
+#### バージョン情報
+
+| ソフトウェアスタック | バージョン     |
+|:---------------------|:--------------:|
+| RDS(PostgreSQL)      | 11             |
+| 踏み台サーバー(EC2)  | Amazon Linux 2 |
+
+#### 本番環境へのデプロイ
+
+GitHubのmasterブランチが更新された時、CircleCIで静的コード解析、テストが通ったらポートフォワーディングを使用してRDSに接続しRailsのマイグレーションを実行することでPostgreSQLのデータベースを更新します  
+
+**masterブランチ以外の更新時はマイグレーションは実行されません**
+
+## 環境構築
+
+環境構築のために `AWS`、`CircleCI`、`Slack` の環境構築が必要です  
+すごく長いので別リンクにて確認してください
+
+### AWSの環境構築
+
+AWSではVPC、踏み台サーバー、RDSの構築を行います  
+
+AWSの環境構築にはUdemy の `手を動かしながら2週間で学ぶ AWS 基本から応用まで` の教材をすごく参考にさせて頂きました  
+現在は受講出来ないようなので作者のブログ記事の [AWS学習の0→1をサポートする講座「手を動かしながら2週間で学ぶ AWS 基本から応用まで」をUdemyでリリースしました - log4ketancho](https://www.ketancho.net/entry/2018/09/03/074115) を確認してください
+
+- #### [VPC構築手順書](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/VPC_CONSTRUCTION.md)
+
+![01_eroge_release_vpc](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/01_eroge_release_vpc.png)
+
+- #### [踏み台サーバー構築手順書](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/STEPPING_STONE_SERVER_CONSTRUCTION.md)
+
+![02_stepping_stone_server](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/02_stepping_stone_server.png)
+
+- #### [RDS(Master/Slave構成)構築手順書](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/DB_CONSTRUCTION.md)
+
+![03_eroge_release_db_rds](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/03_eroge_release_db_rds.png)
+
+### CircleCIの環境構築
+
+CircleCIでは静的コード解析、テストを行い、成功した場合にRDSへポートフォワーディングで接続してマイグレーションを実行します  
+またマイグレーションを実行するかどうか・マイグレーションの実行結果をSlackに通知する仕組みもあります
+
+- #### [CircleCIの環境構築](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/CIRCLE_CI_CONSTRUCTION.md)
+
+![04_circleci_projects](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/04_circleci_projects.png)
+
+### Slackの環境構築
+
+Slackではマイグレーションを実行するかどうかの承認通知、マイグレーション完了通知を行います
+
+- #### [Slackの環境構築](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/SLACK_CONSTRUCTION.md)
+
+**マイグレーション成功時**
+
+![05_notify_deploy_success](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/05_notify_deploy_success.png)
+
+**マイグレーション失敗時**
+
+![06_notify_deploy_failure](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/06_notify_deploy_failure.png)
+
+## 開発
+
+ローカルで開発を行う方法を説明します  
+
+### 開発ができる状態にする
+
+下記のコマンドを実行すれば開発を行うことができます
+
+```shell
+$ docker-compose run runner
 ```
 
-### database.ymlを変更
+実行後、下記のような状態になれば大丈夫です
 
-```yml
-default: &default
-  adapter: postgresql
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  encoding: utf8
-  username: root
-  password:
-  host: postgres
-  port: 5432
+![07_local_development_start](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/07_local_development_start.png)
 
-development:
-  <<: *default
-  database: dev_eroge_release
+︙
+︙
+︙
 
-test:
-  <<: *default
-  database: test_eroge_release
+![08_local_development_end](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/08_local_development_end.png)
 
-production:
-  <<: *default
-  database: prod_eroge_release
+### 開発方法
+
+[Railsガイド](https://railsguides.jp/) などの以下のドキュメントを参考にマイグレーションファイルを作成していき開発を行っていきます
+
+- [2 マイグレーションを作成する](https://railsguides.jp/active_record_migrations.html#%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B)
+
+### 開発環境を削除する
+
+コンテナ、イメージ、ボリューム、ネットワークをすべて一括で削除します
+
+```shell
+$ docker-compose down --rmi all --volumes
 ```
- 
+
+参考記事：[《滅びの呪文》Docker Composeで作ったコンテナ、イメージ、ボリューム、ネットワークを一括完全消去する便利コマンド - Qiita](https://qiita.com/suin/items/19d65e191b96a0079417)
