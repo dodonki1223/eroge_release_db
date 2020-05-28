@@ -6,7 +6,13 @@ ARG NODE_MAJOR
 ARG YARN_VERSION
 ARG BUNDLER_VERSION
 
+# パイプライン内のコマンドがエラーとなった時に中断するオプション
+#   これがないとパイプライン時に途中で失敗しているが最後が成功しているような時は
+#   成功とみなされてしまうため、この設定が必要である
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # Common dependencies
+# hadolint ignore=DL3008
 RUN apt-get update -qq \
   && DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
     build-essential \
@@ -35,6 +41,7 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
 
 # Install dependencies
 COPY .dockerdev/Aptfile /tmp/Aptfile
+# hadolint ignore=SC2002,SC2046,DL3008
 RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get -yq dist-upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
     libpq-dev \
