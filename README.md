@@ -107,7 +107,7 @@ Slackではマイグレーションを実行するかどうかの承認通知、
 下記のコマンドを実行すれば開発を行うことができます
 
 ```shell
-$ docker-compose run runner
+$ docker-compose run --rm runner
 ```
 
 実行後、下記のような状態になれば大丈夫です
