@@ -39,6 +39,8 @@ config.ymlで環境変数を使用している場合は画面上から設定が�
 
 | 環境変数名                          | 説明                                                            |
 |:------------------------------------|:----------------------------------------------------------------|
+| DOCKERHUB_PASSWORD                  | Docker Hubのログインユーザーのパスワード                        |
+| DOCKERHUB_USER                      | Docker Hubのログインユーザー                                    |
 | EROGE_RELEASE_DB_HOST               | RDSのエンドポイント                                             |
 | EROGE_RELEASE_DB_LOCAL_PORT         | ポートフォワーディングで使用するポート番号                      |
 | EROGE_RELEASE_DB_NAME               | RDSで作成したデータベース名                                     |
