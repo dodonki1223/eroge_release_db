@@ -1,12 +1,14 @@
 inherit_from: .rubocop_todo.yml
 
-require: rubocop-rails
+require:
+  - rubocop-rspec
+  - rubocop-rails
 
 Rails:
   Enabled: true
 
 AllCops:
-  TargetRubyVersion: 2.6.5
+  TargetRubyVersion: 2.6.6
   Exclude:
     - bin/bundle
     - bin/rails
