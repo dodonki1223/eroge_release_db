@@ -5,7 +5,7 @@ orbs:
 executors:
   base:
     docker:
-      - image: circleci/ruby:2.6.5-node-browsers
+      - image: circleci/ruby:2.6.6-node-browsers
         auth:
           username: $DOCKERHUB_USER
           password: $DOCKERHUB_PASSWORD
