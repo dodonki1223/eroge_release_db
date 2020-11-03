@@ -146,7 +146,8 @@ jobs:
     executor: base
     steps:
       - checkout
-      - ruby/install-deps
+      - ruby/install-deps:
+          key: gems-v2
       - install-yarn-packages
       - test-db-settings
       - save-workspace
@@ -154,20 +155,23 @@ jobs:
     executor: base
     steps:
       - using-workspace
-      - ruby/install-deps
+      - ruby/install-deps:
+          key: gems-v2
       - linter
   test:
     executor: base
     steps:
       - using-workspace
-      - ruby/install-deps
+      - ruby/install-deps:
+          key: gems-v2
       - testing
       - store-coverage
   document:
     executor: base
     steps:
       - using-workspace
-      - ruby/install-deps
+      - ruby/install-deps:
+          key: gems-v2
       - development-db-settings
       - generate-entity-relationship-diagrams
       - store-entity-relationship-diagrams
@@ -175,7 +179,8 @@ jobs:
     executor: base
     steps:
       - using-workspace
-      - ruby/install-deps
+      - ruby/install-deps:
+          key: gems-v2
       - deploy-db-settings
       - bastion-port-forwarding
       - migration-db
