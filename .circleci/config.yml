@@ -27,12 +27,6 @@ executors:
     working_directory: ~/dodonki1223/eroge_release_db
 
 commands:
-  # Yarn系のパッケージのインストール関連のコマンド
-  install-yarn-packages:
-    steps:
-      - node/install-packages:
-          pkg-manager: yarn
-
   # テストDB設定関連のコマンド
   # https://circleci.com/docs/ja/2.0/postgres-config/
   test-db-settings:
@@ -57,6 +51,8 @@ commands:
   # Linter関連のコマンド
   linter:
     steps:
+      - ruby/rubocop-check:
+          label: Rubocop
       - run:
           name: Rails Best Practices
           command: bundle exec rails_best_practices .
@@ -138,7 +134,8 @@ jobs:
       - checkout
       - ruby/install-deps:
           key: gems-v2
-      - install-yarn-packages
+      - node/install-packages:
+          pkg-manager: yarn
       - test-db-settings
       - save-workspace
   lint:
@@ -147,8 +144,6 @@ jobs:
       - using-workspace
       - ruby/install-deps:
           key: gems-v2
-      - ruby/rubocop-check:
-          label: Rubocop
       - linter
   test:
     executor: base
