@@ -73,6 +73,6 @@ RSpec.describe Game, type: :model do
   describe 'destroy' do
     let!(:game) { create(:game_cast).game }
 
-    it { expect { game.destroy } .to change(GameCast, :count).by(-1) }
+    it { expect { game.destroy }.to change(GameCast, :count).by(-1) }
   end
 end
