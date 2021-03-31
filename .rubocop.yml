@@ -9,6 +9,7 @@ Rails:
 
 AllCops:
   TargetRubyVersion: 2.6.6
+  NewCops: enable
   Exclude:
     - bin/bundle
     - bin/rails

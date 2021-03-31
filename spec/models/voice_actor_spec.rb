@@ -21,6 +21,6 @@ RSpec.describe VoiceActor, type: :model do
   describe 'destroy' do
     let!(:voice_actor) { create(:game_cast).voice_actor }
 
-    it { expect { voice_actor.destroy } .to change(GameCast, :count).by(-1) }
+    it { expect { voice_actor.destroy }.to change(GameCast, :count).by(-1) }
   end
 end
