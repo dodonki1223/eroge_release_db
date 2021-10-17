@@ -8,11 +8,11 @@ x-app: &app
     args:
       RUBY_VERSION: '2.6.6'
       PG_MAJOR: '11'
-      NODE_MAJOR: '12'
+      NODE_MAJOR: '14'
       YARN_VERSION: '1.21.1'
       BUNDLER_VERSION: '2.1.4'
   environment: &env
-    RAILS_ENV: ${RAILS_ENV:-development}      
+    RAILS_ENV: ${RAILS_ENV:-development}
     NODE_ENV: ${NODE_ENV:-development}
   tmpfs:
     - /tmp
@@ -64,6 +64,32 @@ services:
       PSQL_HISTFILE: /root/log/.psql_history
     ports:
       - '5432:5432'
+
+  schemaspy:
+    image: schemaspy/schemaspy
+    volumes:
+      - .dockerdev/schemaspy/output/:/output
+    command: >
+      java -jar schemaspy.jar
+      -t pgsql
+      -host ${DB_HOST:-postgres}
+      -port ${DB_PORT:-5432}
+      -db ${DB_NAME:-dev_eroge_release}
+      -u ${DB_USER:-root}
+      -p ${DB_PASS:-}
+      -s ${DB_NAME:-public}
+      -connprops useSSL\\\\=false
+    depends_on:
+      - postgres
+
+  schemaspy_web:
+    image: nginx:1.18-alpine
+    volumes:
+      - .dockerdev/schemaspy/output/:/usr/share/nginx/html
+    ports:
+      - ${SCHEMASPY_WEB_PORT:-8080}:80
+    depends_on:
+      - schemaspy
 
 volumes:
   postgres:
