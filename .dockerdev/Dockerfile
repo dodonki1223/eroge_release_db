@@ -37,7 +37,7 @@ RUN curl -sL https://deb.nodesource.com/setup_$NODE_MAJOR.x | bash -
 # Add Yarn to the sources list
 # https://classic.yarnpkg.com/en/docs/install#debian-stable
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-  && echo 'deb http://dl.yarnpkg.com/debian/ stable main' > /etc/apt/sources.list.d/yarn.list
+  && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 
 # Install dependencies
 COPY .dockerdev/Aptfile /tmp/Aptfile
