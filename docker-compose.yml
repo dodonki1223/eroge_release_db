@@ -65,6 +65,32 @@ services:
     ports:
       - '5432:5432'
 
+  schemaspy:
+    image: schemaspy/schemaspy
+    volumes:
+      - .dockerdev/schemaspy/output/:/output
+    command: >
+      java -jar schemaspy.jar
+      -t pgsql
+      -host postgres
+      -port 5432
+      -db ${DB_NAME:-dev_eroge_release}
+      -u ${DB_USER:-root}
+      -p ${DB_PASS:-}
+      -s ${DB_NAME:-public}
+      -connprops useSSL\\\\=false
+    depends_on:
+      - postgres
+
+  schemaspy_web:
+    image: nginx:1.18-alpine
+    volumes:
+      - .dockerdev/schemaspy/output/:/usr/share/nginx/html
+    ports:
+      - ${SCHEMASPY_WEB_PORT:-8080}:80
+    depends_on:
+      - schemaspy
+
 volumes:
   postgres:
   bundle:

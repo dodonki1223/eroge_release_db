@@ -39,5 +39,8 @@
 yarn-debug.log*
 .yarn-integrity
 
+# Ignore schemaspy
+/.dockerdev/schemaspy/output
+
 # Other
 .Ds_Store
