@@ -69,16 +69,9 @@ services:
     image: schemaspy/schemaspy
     volumes:
       - .dockerdev/schemaspy/output/:/output
+      - .dockerdev/schemaspy/schemaspy.properties:/schemaspy.properties
     command: >
       java -jar schemaspy.jar
-      -t pgsql
-      -host ${DB_HOST:-postgres}
-      -port ${DB_PORT:-5432}
-      -db ${DB_NAME:-dev_eroge_release}
-      -u ${DB_USER:-root}
-      -p ${DB_PASS:-}
-      -s ${DB_NAME:-public}
-      -connprops useSSL\\\\=false
     depends_on:
       - postgres
 
