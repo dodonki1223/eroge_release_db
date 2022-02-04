@@ -126,6 +126,15 @@ $ docker-compose run --rm runner
 
 - [2 マイグレーションを作成する](https://railsguides.jp/active_record_migrations.html#%E3%83%9E%E3%82%A4%E3%82%B0%E3%83%AC%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B)
 
+
+### SchemaSpy を使用して定義を確認する
+
+SchemaSpy でファイルを出力し、localhost:8080 にアクセスすることでデータベースの定義を見ることができます
+
+```shell
+$ docker-compose run --rm schemaspy && docker-compose up schemaspy_web
+```
+
 ### 開発環境を削除する
 
 コンテナ、イメージ、ボリューム、ネットワークをすべて一括で削除します
