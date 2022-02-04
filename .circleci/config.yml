@@ -3,7 +3,7 @@ orbs:
   ruby: circleci/ruby@1.1.2
   node: circleci/node@4.1.0
   slack: circleci/slack@3.4.2
-  docker: circleci/docker@1.5.0
+  docker: circleci/docker@2.0.1
 executors:
   base:
     docker:
@@ -59,6 +59,15 @@ commands:
       - run:
           name: Brakeman
           command: bundle exec brakeman
+
+  docker-linter:
+    steps:
+      - docker/hadolint:
+          dockerfiles: .dockerdev/runner/Dockerfile
+          ignore-rules: 'DL3008,DL4001'
+      - docker/hadolint:
+          dockerfiles: .dockerdev/schemaspy/Dockerfile
+          ignore-rules: 'DL3018'
 
   # テストカバレッジ関連のコマンド
   # https://circleci.com/docs/2.0/code-coverage/#ruby
@@ -145,6 +154,11 @@ jobs:
       - ruby/install-deps:
           key: gems-v2
       - linter
+  docker-lint:
+    executor: docker/hadolint
+    steps:
+      - using-workspace
+      - docker-linter
   test:
     executor: base
     steps:
@@ -182,10 +196,7 @@ workflows:
       - lint:
           requires:
             - setup
-      # 詳しくはドキュメントを確認
-      #   https://circleci.com/orbs/registry/orb/circleci/docker
-      - docker/hadolint:
-          dockerfiles: .dockerdev/Dockerfile
+      - docker-lint:
           requires:
             - setup
       - test:
