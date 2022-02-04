@@ -185,7 +185,8 @@ workflows:
       # 詳しくはドキュメントを確認
       #   https://circleci.com/orbs/registry/orb/circleci/docker
       - docker/hadolint:
-          dockerfiles: .dockerdev/Dockerfile
+          dockerfiles: .dockerdev/runner/Dockerfile
+          ignore-rules: 'DL3008,DL4001'
           requires:
             - setup
       - test:
