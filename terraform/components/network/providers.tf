@@ -23,7 +23,6 @@ provider "aws" {
     tags = {
       Component   = var.component
       Application = var.application
-      Description = "VPC for creating ${var.application} resources"
     }
   }
 }
