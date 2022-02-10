@@ -11,7 +11,7 @@ terraform {
     region  = "ap-northeast-1"
     encrypt = true
     bucket  = "eroge-release-db"
-    key     = "network/terraform.tfstate"
+    key     = "bastion/terraform.tfstate"
     profile = "terraform"
   }
 }
