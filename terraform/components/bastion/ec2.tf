@@ -24,16 +24,13 @@ resource "aws_instance" "bastion" {
     #!/bin/bash
     # ホスト名の変更
     # https://docs.aws.amazon.com/ja_jp/AWSEC2/latest/UserGuide/set-hostname.html
-    sudo hostnamectl set-hostname eroge-release-stepping-stone-server
+    sudo hostnamectl set-hostname eroge-release-bastion
     # PostgreSQL 11のインストール
-    # https://qiita.com/libra_lt/items/f2d2d8ee389daf21d3fb
-    sudo rpm -ivh --nodeps https://download.postgresql.org/pub/repos/yum/11/redhat/rhel-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-    sudo sed -i "s/\$releasever/7/g" "/etc/yum.repos.d/pgdg-redhat-all.repo"
-    sudo yum install -y postgresql11
+    sudo amazon-linux-extras enable postgresql11
+    sudo amazon-linux-extras install -y postgresql11
     # タイムゾーンをAsia/Tokyoに変更する
     # https://docs.aws.amazon.com/ja_jp/AWSEC2/latest/UserGuide/set-time.html#change_time_zone
-    sudo ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-    sudo sed -i 's|^ZONE=[a-zA-Z0-9\.\-\"]*$|ZONE="Asia/Tokyo”|g' /etc/sysconfig/clock
+    sudo timedatectl set-timezone Asia/Tokyo
   EOF
 
   tags = {
