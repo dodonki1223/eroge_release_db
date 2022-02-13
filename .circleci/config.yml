@@ -110,16 +110,20 @@ commands:
           command: cp config/{database_circleci_deploy,database}.yml
   bastion-port-forwarding:
     steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "09:73:fb:0a:d8:e2:b9:0c:e8:7c:23:7e:65:c0:1c:44"
+      - run:
+          name: Register private key for bastion server 
+          command: |
+            mkdir ~/.ssh
+            touch ~/.ssh/eroge-release.pem
+            echo ${BASTION_SERVER_PRIVATE_KEY} | base64 --decode > ~/.ssh/eroge-release.pem
+            chmod 600 ~/.ssh/eroge-release.pem
       - run:
           name: Bastion server port forwarding
           # 「-o StrictHostKeyChecking=no」は下記の対話処理を省略するために追加
           #   The authenticity of host 'hoge (fuga)' can't be established.
           #   RSA key fingerprint is hoge
           #   Are you sure you want to continue connecting (yes/no)? 
-          command: ssh -o StrictHostKeyChecking=no -f -N -L ${EROGE_RELEASE_DB_LOCAL_PORT}:${EROGE_RELEASE_DB_HOST}:${EROGE_RELEASE_DB_PORT} ${BASTION_SERVER_USER}@${BASTION_SERVER_HOST}
+          command: ssh -o StrictHostKeyChecking=no -i ~/.ssh/eroge-release.pem -f -N -L ${EROGE_RELEASE_DB_LOCAL_PORT}:${EROGE_RELEASE_DB_HOST}:${EROGE_RELEASE_DB_PORT} -4 ${BASTION_SERVER_USER}@${BASTION_SERVER_HOST}
   deploy-notification:
     steps:
       - slack/status:
