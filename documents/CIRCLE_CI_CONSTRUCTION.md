@@ -37,21 +37,28 @@ config.ymlで環境変数を使用している場合は画面上から設定が�
 
 環境変数には以下の値を設定してください
 
-| 環境変数名                          | 説明                                                            |
-|:------------------------------------|:----------------------------------------------------------------|
-| DOCKERHUB_PASSWORD                  | Docker Hubのログインユーザーのパスワード                        |
-| DOCKERHUB_USER                      | Docker Hubのログインユーザー                                    |
-| EROGE_RELEASE_DB_HOST               | RDSのエンドポイント                                             |
-| EROGE_RELEASE_DB_LOCAL_PORT         | ポートフォワーディングで使用するポート番号                      |
-| EROGE_RELEASE_DB_NAME               | RDSで作成したデータベース名                                     |
-| EROGE_RELEASE_DB_PASSWORD           | masterユーザーのパスワード                                      |
-| EROGE_RELEASE_DB_PORT               | RDSのポート番号（デフォルト：5432）                             |
-| EROGE_RELEASE_DB_SCHEMA_SEARCH_PATH | RDSで設定したsearch_path                                        |
-| EROGE_RELEASE_DB_USER               | RDSで設定したmasterユーザー名                                   |
-| RAILS_MASTER_KEY                    | Railsのmaster.key                                               |
-| SLACK_WEBHOOK                       | Slackの `Webhook URL`                                           |
-| STEPPING_STONE_SERVER_HOST          | `踏み台サーバーのパブリックDNS(IPv4)` または `IPv4パブリックIP` |
-| STEPPING_STONE_SERVER_USER          | 踏み台サーバーのユーザー名（デフォルト：ec2-user）              |
+| 環境変数名                          | 説明                                                                             |
+|:------------------------------------|:---------------------------------------------------------------------------------|
+| BASTION_SERVER_HOST                 | `踏み台サーバーのパブリックDNS(IPv4)` または `IPv4パブリックIP`                  |
+| BASTION_SERVER_PRIVATE_KEY          | `踏み台サーバーにアクセスするための Private ssh key を base64 でエンコードした値 |
+| BASTION_SERVER_USER                 | 踏み台サーバーのユーザー名（デフォルト：ec2-user）                               |
+| DOCKERHUB_PASSWORD                  | Docker Hubのログインユーザーのパスワード                                         |
+| DOCKERHUB_USER                      | Docker Hubのログインユーザー                                                     |
+| EROGE_RELEASE_DB_HOST               | RDSのエンドポイント                                                              |
+| EROGE_RELEASE_DB_LOCAL_PORT         | ポートフォワーディングで使用するポート番号                                       |
+| EROGE_RELEASE_DB_NAME               | RDSで作成したデータベース名                                                      |
+| EROGE_RELEASE_DB_PASSWORD           | masterユーザーのパスワード                                                       |
+| EROGE_RELEASE_DB_PORT               | RDSのポート番号（デフォルト：5432）                                              |
+| EROGE_RELEASE_DB_SCHEMA_SEARCH_PATH | RDSで設定したsearch_path                                                         |
+| EROGE_RELEASE_DB_USER               | RDSで設定したmasterユーザー名                                                    |
+| RAILS_MASTER_KEY                    | Railsのmaster.key                                                                |
+| SLACK_WEBHOOK                       | Slackの `Webhook URL`                                                            |
+
+`BASTION_SERVER_PRIVATE_KEY` に設定する値はローカルにある private ssh key を以下のコマンドで得られた値を設定してください
+
+```shell
+$ cat .ssh/eroge-release.id_rsa | base64
+```
 
 `master.key` については以下を参照してください
 
