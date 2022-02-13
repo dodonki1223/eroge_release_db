@@ -13,6 +13,18 @@ ap-northeast-1a、ap-northeast-1cそれぞれのアベイラビリティーゾ�
 
 VPCウィザードを使用して `VPC`、`パブリックサブネット`、`インターネットゲートウェイ` を作成します  
 
+### Terraform で作成する
+
+現在は Terraform 化されているため、コマンド一発で環境を構築できます
+
+```shell
+# ネットワーク作成ディレクトリへ移動
+$ cd terraform/components/network
+
+# Terraform で作成する
+$ terraform apply -parallelism=30
+```
+
 ### VPCウィザードを開く
 
 `VPCダッシュボード` の画面で `VPCウィザードの起動` をクリックして下さい

@@ -67,6 +67,24 @@ AWSではVPC、踏み台サーバー、RDSの構築を行います
 AWSの環境構築にはUdemy の `手を動かしながら2週間で学ぶ AWS 基本から応用まで` の教材をすごく参考にさせて頂きました  
 現在は受講出来ないようなので作者のブログ記事の [AWS学習の0→1をサポートする講座「手を動かしながら2週間で学ぶ AWS 基本から応用まで」をUdemyでリリースしました - log4ketancho](https://www.ketancho.net/entry/2018/09/03/074115) を確認してください
 
+現在はコンソール画面で作成せずに **Terraform 化されているため、基本的には Terraform で作成することをオススメします！**
+
+#### Terraform 環境構築
+
+Terraform 化されたため、 Terraform の tfstate ファイルを管理させる S3 を作成します  
+tfstate を管理させるバケットとバケット作成コマンドを実行する profile 名を指定して実行させます
+
+```shell
+$ bash bin/init_s3.sh
+
+tfstateを格納するS3バケット名を入力して下さい: eroge-release-db
+S3バケット作成で使用するprofile名を入力してください: terraform
+eroge-release-dbの作成を行います
+eroge-release-dbにバージョンニングを有効化に成功しました
+eroge-release-dbにサーバー側の暗号化を有効化に成功しました
+eroge-release-dbのアクセスの変更に成功しました
+```
+
 - #### [VPC構築手順書](https://github.com/dodonki1223/eroge_release_db/blob/master/documents/VPC_CONSTRUCTION.md)
 
 ![01_eroge_release_vpc](https://raw.githubusercontent.com/dodonki1223/image_garage/master/eroge_release_db/readme/01_eroge_release_vpc.png)

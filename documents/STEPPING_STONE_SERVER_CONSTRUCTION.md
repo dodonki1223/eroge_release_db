@@ -21,6 +21,18 @@
 
 踏み台サーバー用のためのEC2インスタンスを作成します
 
+### Terraform で作成する
+
+現在は Terraform 化されているため、コマンド一発で環境を構築できます
+
+```shell
+# 踏み台サーバー作成ディレクトリへ移動
+$ cd terraform/components/bastion
+
+# Terraform で作成する
+$ terraform apply -parallelism=30
+```
+
 ### EC2インスタンス作成画面を開く
 
 `インスタンス作成` をクリックします
@@ -57,21 +69,17 @@
 
 ```shell
 #!/bin/bash
-
 # ホスト名の変更
 # https://docs.aws.amazon.com/ja_jp/AWSEC2/latest/UserGuide/set-hostname.html
-sudo hostnamectl set-hostname eroge-release-stepping-stone-server
+sudo hostnamectl set-hostname eroge-release-bastion
 
 # PostgreSQL 11のインストール
-# https://qiita.com/libra_lt/items/f2d2d8ee389daf21d3fb
-sudo rpm -ivh --nodeps https://download.postgresql.org/pub/repos/yum/11/redhat/rhel-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-sudo sed -i "s/\$releasever/7/g" "/etc/yum.repos.d/pgdg-redhat-all.repo"
-sudo yum install -y postgresql11
+sudo amazon-linux-extras enable postgresql11
+sudo amazon-linux-extras install -y postgresql11
 
 # タイムゾーンをAsia/Tokyoに変更する
 # https://docs.aws.amazon.com/ja_jp/AWSEC2/latest/UserGuide/set-time.html#change_time_zone
-sudo ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-sudo sed -i 's|^ZONE=[a-zA-Z0-9\.\-\"]*$|ZONE="Asia/Tokyo”|g' /etc/sysconfig/clock
+sudo timedatectl set-timezone Asia/Tokyo
 ```
 
 最後に `次のステップ：ストレージの追加` をクリックします

@@ -14,6 +14,20 @@ RDSにてPostgreSQLのMaster、Slave構成を構築する
 
 では早速、環境を構築していきます
 
+## Terraform で作成する
+
+現在は Terraform 化されているため、コマンド一発で環境を構築できます
+
+```shell
+# RDS作成ディレクトリへ移動
+$ cd terraform/components/eroge-release
+
+# Terraform で作成する
+$ terraform apply -parallelism=30
+```
+
+後のドキュメントを参考に RDS に対してSQLを実行していきます
+
 ## DB サブネットグループを作成する
 
 MasterとSlaveをどのサブネットでDBインスタンスを起動するかのための設定になります  
