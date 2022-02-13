@@ -5,8 +5,8 @@ terraform {
       source  = "hashicorp/aws"
       version = "3.65.0"
     }
-    tls = {
-      source  = "hashicorp/tls"
+    random = {
+      source = "hashicorp/random"
       version = "3.1.0"
     }
   }
@@ -15,7 +15,7 @@ terraform {
     region  = "ap-northeast-1"
     encrypt = true
     bucket  = "eroge-release-db"
-    key     = "bastion/terraform.tfstate"
+    key     = "eroge-release/terraform.tfstate"
     profile = "terraform"
   }
 }
