@@ -2,7 +2,7 @@ resource "aws_instance" "bastion" {
   ami                         = "ami-0f310fced6141e627"
   associate_public_ip_address = "true"
   instance_type               = "t2.nano"
-  subnet_id                   = data.terraform_remote_state.network.outputs.bastion_public_subnet_id
+  subnet_id                   = data.terraform_remote_state.network.outputs.public_subnet_ids[0]
   vpc_security_group_ids      = [data.terraform_remote_state.network.outputs.security_group_ids.bastion]
 
   credit_specification {

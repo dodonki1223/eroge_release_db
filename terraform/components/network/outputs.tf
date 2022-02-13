@@ -7,15 +7,11 @@ output "vpc_cidr_block" {
 }
 
 output "public_subnet_ids" {
-  value = [aws_subnet.public_subnet.*.id]
+  value = aws_subnet.public_subnet.*.id
 }
 
 output "private_subnet_ids" {
-  value = [aws_subnet.private_subnet.*.id]
-}
-
-output "bastion_public_subnet_id" {
-  value = aws_subnet.public_subnet.*.id[0]
+  value = aws_subnet.private_subnet.*.id
 }
 
 output "security_group_ids" {
