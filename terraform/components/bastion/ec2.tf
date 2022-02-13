@@ -4,6 +4,7 @@ resource "aws_instance" "bastion" {
   instance_type               = "t2.nano"
   subnet_id                   = data.terraform_remote_state.network.outputs.public_subnet_ids[0]
   vpc_security_group_ids      = [data.terraform_remote_state.network.outputs.security_group_ids.bastion]
+  key_name                    = aws_key_pair.key_pair.id
 
   credit_specification {
     cpu_credits = "standard"
