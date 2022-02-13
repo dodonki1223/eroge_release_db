@@ -17,6 +17,12 @@ variable "application" {
   default     = "eroge-release"
 }
 
+variable "application_snake_case" {
+  description = "Application Name"
+  type        = string
+  default     = "eroge_release"
+}
+
 variable "component" {
   description = "RDS resource"
   type        = string

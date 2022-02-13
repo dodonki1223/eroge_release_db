@@ -8,3 +8,9 @@ data "terraform_remote_state" "network" {
     profile = "terraform"
   }
 }
+
+data "aws_caller_identity" "current" {}
+
+output "account_id" {
+  value = data.aws_caller_identity.current.account_id
+}
