@@ -21,5 +21,6 @@ output "private_subnet_ids" {
 output "security_group_ids" {
   value = {
     bastion = aws_security_group.bastion.id
+    rds     = aws_security_group.eroge_release_rds.id
   }
 }
