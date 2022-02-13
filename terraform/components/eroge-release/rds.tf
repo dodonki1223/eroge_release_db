@@ -29,7 +29,8 @@ resource "aws_db_instance" "eroge_release" {
   maintenance_window                    = "sun:18:00-sun:18:30"
   backup_retention_period               = 7
   backup_window                         = "20:00-20:30"
-  final_snapshot_identifier             = false
+  skip_final_snapshot                   = false
+  final_snapshot_identifier             = format("%s-db", var.application)
 
   # ログに関する設定
   enabled_cloudwatch_logs_exports       = ["upgrade", "postgresql"]
