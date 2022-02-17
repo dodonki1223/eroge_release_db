@@ -84,7 +84,7 @@ services:
       - postgres
 
   schemaspy_web:
-    image: nginx:1.18-alpine
+    image: nginx:1.21.6-alpine
     volumes:
       - .dockerdev/schemaspy/output/:/usr/share/nginx/html
     ports:
