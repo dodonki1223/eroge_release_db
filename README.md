@@ -153,6 +153,28 @@ SchemaSpy でファイルを出力し、localhost:8080 にアクセスするこ�
 $ docker-compose run --rm schemaspy && docker-compose up schemaspy_web
 ```
 
+### インフラ構成を変更する
+
+./terraform/components のフォルダにある程度の粒度で分割されています  
+基本的には以下の単位で開発を行います
+
+- terraform/components/network
+- terraform/components/bastion
+- terraform/components/eroge-release
+
+まずは network のフォルダに入りそこで `terraform apply` してください  
+bastion, eroge-release は network の component に依存しているため先に network component を先にデプロイしてないと開発ができません
+
+基本的には以下のコマンド群を使用して開発します
+
+```shell
+# 作成するインフラを確認する
+$ terraform plan -parallelism=30
+
+# 実際にインフラを適用する
+$ terraform apply -parallelism=30
+```
+
 ### 開発環境を削除する
 
 コンテナ、イメージ、ボリューム、ネットワークをすべて一括で削除します
